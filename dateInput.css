@@ -1,0 +1,23 @@
+/* for week- and month-picker */
+.ui-datepicker-calendar tr:hover .ui-datepicker-week a,
+.ui-datepicker-calendar tbody:hover .ui-datepicker-month a { /* ui-state-hover */
+	background: #fdf5ce url(http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/ui-lightness/images/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x;
+	border: 1px solid #fbcb09;
+	font-weight: bold;
+	color: #c77405;
+	text-decoration: none;
+}
+.ui-datepicker-calendar tr .ui-datepicker-week.ui-datepicker-week-current a,
+.ui-datepicker-calendar tbody .ui-datepicker-month.ui-datepicker-month-current a { /* ui-state-highlight */
+	background: #ffe45c url(http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/ui-lightness/images/ui-bg_highlight-soft_75_ffe45c_1x100.png) 50% top repeat-x;
+	border: 1px solid #fed22f;
+	color: #363636;
+}
+.ui-datepicker-calendar tr .ui-datepicker-week.ui-datepicker-week-selected a,
+.ui-datepicker-calendar tbody .ui-datepicker-month.ui-datepicker-month-selected a { /* ui-state-active */
+	background: url("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #FFFFFF;
+    border: 1px solid #fbd850;
+    color: #eb8f00;
+    font-weight: bold;
+	text-decoration: none;
+}
