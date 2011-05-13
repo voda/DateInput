@@ -192,7 +192,7 @@
 	$.fn.dateinput = function(userSettings) {
 		this.each(function() {
 			var t = $(this);
-			var type = t.data('dateinput-type');
+			var type = t.attr('data-dateinput-type');
 			var settings = globalSettings[type];
 			userSettings = userSettings || {};
 			$.extend(settings, userSettings[type] || {});
