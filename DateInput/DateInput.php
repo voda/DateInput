@@ -78,6 +78,7 @@ class DateInput extends BaseControl  {
 		}
 		parent::__construct($label);
 		$this->control->type = $this->type = $type;
+		$this->control->data('dateinput-type', $type);
 	}
 
 	/**

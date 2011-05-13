@@ -191,13 +191,13 @@
 
 	$.fn.dateinput = function(userSettings) {
 		this.each(function() {
-			var type = this.type;
+			var t = $(this);
+			var type = t.data('dateinput-type');
 			var settings = globalSettings[type];
 			userSettings = userSettings || {};
 			$.extend(settings, userSettings[type] || {});
 
 			// create alt field
-			var t = $(this);
 			this.type = 'text';
 			var alt = t.clone().attr('id', null);
 			alt.get(0).type = 'hidden';
