@@ -200,7 +200,7 @@
 			var t = $(this);
 			this.type = 'text';
 			var alt = t.clone().attr('id', null);
-			alt.get(0).type = 'text'; //hidden
+			alt.get(0).type = 'hidden';
 			t.attr('name', null);
 			t.val(null);
 			t.after(alt);
