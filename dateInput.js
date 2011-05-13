@@ -26,6 +26,13 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ * Sources:
+ * http://stackoverflow.com/questions/2208480/jquery-date-picker-to-show-month-year-only
+ * http://stackoverflow.com/questions/2224135/can-i-highlight-an-entire-week-in-the-standard-jquery-ui-date-picker
+ * http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+ * http://stackoverflow.com/questions/2224135/can-i-highlight-an-entire-week-in-the-standard-jquery-ui-date-picker
  */
 (function($) {
 	/***************************************************************************
@@ -89,7 +96,7 @@
 		}
 		var year = parseInt(date.substr(0,4), 10);
 		var week = parseInt(date.substr(6,2), 10);
-		// http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+
 		var correctionDate = new Date(year, 0, 4);
 		var correction = correctionDate.getDay();
 		if (correction == 0) {
