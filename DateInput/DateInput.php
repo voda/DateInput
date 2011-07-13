@@ -28,15 +28,15 @@
 
 namespace Vodacek\Forms\Controls;
 
-use Nette\Forms\IControl,
-	Nette\Forms\Controls\BaseControl;
+use Nette\Forms\IFormControl,
+	Nette\Forms\FormControl;
 
 /**
  * @author Ondřej Vodáček <ondrej.vodacek@gamil.com>
  * @copyright 2011, Ondřej Vodáček
  * @license New BSD License
  */
-class DateInput extends BaseControl  {
+class DateInput extends FormControl {
 
 	const TYPE_DATETIME = 'datetime',
 			TYPE_DATETIME_LOCAL = 'datetime-local',
@@ -65,7 +65,7 @@ class DateInput extends BaseControl  {
 
 	public static function register() {
 		$class = __CLASS__;
-		\Nette\Forms\Container::extensionMethod('addDate', function (\Nette\Forms\Container $form, $name, $label = null, $type = 'datetime-local') use ($class) {
+		\Nette\Forms\FormContainer::extensionMethod('addDate', function (\Nette\Forms\FormContainer $form, $name, $label = null, $type = 'datetime-local') use ($class) {
 			$component = new $class($label, $type);
 			$form->addComponent($component, $name);
 			return $component;
@@ -78,7 +78,7 @@ class DateInput extends BaseControl  {
 		}
 		parent::__construct($label);
 		$this->control->type = $this->type = $type;
-		$this->control->data('dateinput-type', $type);
+		$this->control->{'data-dateinput-type'} = $type;
 	}
 
 	/**
@@ -167,7 +167,7 @@ class DateInput extends BaseControl  {
 	 * @param  IControl
 	 * @return bool
 	 */
-	public static function validateFilled(IControl $control) {
+	public static function validateFilled(IFormControl $control) {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
@@ -181,7 +181,7 @@ class DateInput extends BaseControl  {
 	 * @param  IControl
 	 * @return bool
 	 */
-	public static function validateValid(IControl $control) {
+	public static function validateValid(IFormControl $control) {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
