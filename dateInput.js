@@ -203,8 +203,8 @@
 			try {
 				alt.get(0).type = 'hidden';
 			} catch (exception) {
-				// fox for: http://webbugtrack.blogspot.com/2007/09/bug-237-type-is-readonly-attribute-in.html
-				alt = $(alt.get(0).outerHTML.replace(/type=(['"]?)[a-z-]+\1/, 'type="hidden"'));
+				// fix for: http://webbugtrack.blogspot.com/2007/09/bug-237-type-is-readonly-attribute-in.html
+				alt = $(alt.get(0).outerHTML.replace(/ type=(['"]?)[a-z-]+\1/, ' type="hidden"'));
 			}
 			t.attr('name', null);
 			t.val(null);
