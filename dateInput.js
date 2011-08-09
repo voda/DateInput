@@ -1,5 +1,5 @@
 /*
- * Author: Ondřej Vodáček <ondrej.vodacek@gamil.com>
+ * Author: Ondřej Vodáček <ondrej.vodacek@gmail.com>
  * License: New BSD License
  *
  * Copyright (c) 2011, Ondřej Vodáček

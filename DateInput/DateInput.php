@@ -32,7 +32,7 @@ use Nette\Forms\IControl,
 	Nette\Forms\Controls\BaseControl;
 
 /**
- * @author Ondřej Vodáček <ondrej.vodacek@gamil.com>
+ * @author Ondřej Vodáček <ondrej.vodacek@gmail.com>
  * @copyright 2011, Ondřej Vodáček
  * @license New BSD License
  */
