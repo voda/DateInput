@@ -142,19 +142,7 @@ class DateInput extends FormControl {
 		if ($operation === \Nette\Forms\Form::RANGE) {
 			$this->range['min'] = $arg[0];
 			$this->range['max'] = $arg[1];
-			$this->addRule(function(DateInput $control, $range) {
-				if ($range['min'] !== null) {
-					if ($range['min'] > $control->getValue()) {
-						return false;
-					}
-				}
-				if ($range['max'] !== null) {
-					if ($range['max'] < $control->getValue()) {
-						return false;
-					}
-				}
-				return true;
-			}, $message, $this->range);
+			$this->addRule(array(__CLASS__, 'validateRange'), $message, $this->range);
 			return $this;
 		}
 		return parent::addRule($operation, $message, $arg);
