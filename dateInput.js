@@ -369,14 +369,14 @@
 	};
 
 	// Nette validators
-	Nette.validators.dateValid = function(elem, arg, val) {
+	Nette.validators.dateInputValid = function(elem, arg, val) {
 		var el = $(elem);
 		var type = el.attr('data-dateinput-type');
 		var format = globalSettings[type].validFormat;
 		val = el.data('altField').val();
 		return (new RegExp('^(' + format + ')$')).test(val);
 	};
-	Nette.validators.dateRange = function(elem, arg, val) {
+	Nette.validators.dateInputRange = function(elem, arg, val) {
 		var el = $(elem);
 		val = el.data('altField').val();
 		return Nette.isArray(arg) ? ((arg[0] === null || val >= arg[0]) && (arg[1] === null || val <= arg[1])) : null;
