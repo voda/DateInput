@@ -156,38 +156,44 @@
 				return object.datetimepicker(settings);
 			},
 			dateFormat: 'yy-mm-dd',
-			timeFormat: 'hh:mm'
+			timeFormat: 'hh:mm',
+			validFormat: '\\d{4}-\\d{2}-\\d{2}'
 		},
 		date: {
 			parseFunction: parseDate,
 			create: function(object, settings) {
 				return object.datepicker(settings);
 			},
-			dateFormat: 'yy-mm-dd'
+			dateFormat: 'yy-mm-dd',
+			validFormat: '\\d{4}-\\d{2}-\\d{2}'
 		},
 		month: {
 			parseFunction: parseMonth,
 			create: function(object, settings) {
 				return object.datepicker(settings);
 			},
-			dateFormat: 'yy-mm'
+			dateFormat: 'yy-mm',
+			validFormat: '\\d{4}-\\d{2}'
 		},
 		week: {
 			parseFunction: parseWeek,
 			create: function(object, settings) {
 				return object.datepicker(settings);
 			},
-			dateFormat: 'yy-Www'
+			dateFormat: 'yy-Www',
+			validFormat: '\\d{4}-W\\d{2}'
 		},
 		time: {
 			parseFunction: parseTime,
 			create: function(object, settings) {
 				return object.timepicker(settings);
 			},
-			timeFormat: 'hh:mm'
+			timeFormat: 'hh:mm',
+			validFormat: '\\d{2}:\\d{2}'
 		}
 	};
 	globalSettings['datetime-local'] = globalSettings.datetime;
+	globalSettings['datetime-local'].validFormat += '.*'; // timezone
 
 	$.fn.dateinput = function(userSettings) {
 		this.each(function() {
@@ -209,6 +215,7 @@
 			t.attr('name', null);
 			t.val(null);
 			t.after(alt);
+			t.data('altField', alt);
 
 			var pickerSettings = {};
 
@@ -359,5 +366,19 @@
 			}
 		});
 		return this;
+	};
+
+	// Nette validators
+	Nette.validators.dateValid = function(elem, arg, val) {
+		var el = $(elem);
+		var type = el.attr('data-dateinput-type');
+		var format = globalSettings[type].validFormat;
+		val = el.data('altField').val();
+		return (new RegExp('^(' + format + ')$')).test(val);
+	};
+	Nette.validators.dateRange = function(elem, arg, val) {
+		var el = $(elem);
+		val = el.data('altField').val();
+		return Nette.isArray(arg) ? ((arg[0] === null || val >= arg[0]) && (arg[1] === null || val <= arg[1])) : null;
 	};
 })(jQuery);

@@ -142,13 +142,14 @@ class DateInput extends BaseControl  {
 		if ($operation === \Nette\Forms\Form::RANGE) {
 			$this->range['min'] = $arg[0];
 			$this->range['max'] = $arg[1];
-			$this->addRule(array(__CLASS__, 'validateRange'), $message, $this->range);
-			return $this;
+			$operation = ':dateRange';
+			$arg[0] = $this->formatDate($arg[0]);
+			$arg[1] = $this->formatDate($arg[1]);
+		} elseif ($operation === \Nette\Forms\Form::VALID) {
+			$operation = ':dateValid';
 		}
 		return parent::addRule($operation, $message, $arg);
 	}
-
-
 
 	/**
 	 * Filled validator: is control filled?
@@ -162,7 +163,14 @@ class DateInput extends BaseControl  {
 		return ($control->value !== null || $control->submitedValue !== null);
 	}
 
-
+	/**
+	 * Valid validator: is control valid?
+	 * @param  IControl
+	 * @return bool
+	 */
+	public static function validateDateValid(IControl $control) {
+		return self::validateValid($control);
+	}
 
 	/**
 	 * Valid validator: is control valid?
@@ -177,19 +185,18 @@ class DateInput extends BaseControl  {
 	}
 
 	/**
-	 *
 	 * @param self $control
 	 * @param array $args
 	 * @return bool
 	 */
-	public static function validateRange(self $control) {
+	public static function validateDateRange(self $control) {
 		if ($control->range['min'] !== null) {
-			if ($control->range['min'] > $control->getValue()) {
+			if ($control->range['min'] >= $control->getValue()) {
 				return false;
 			}
 		}
 		if ($control->range['max'] !== null) {
-			if ($control->range['max'] < $control->getValue()) {
+			if ($control->range['max'] <= $control->getValue()) {
 				return false;
 			}
 		}
