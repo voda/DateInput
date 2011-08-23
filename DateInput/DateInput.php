@@ -168,7 +168,7 @@ class DateInput extends FormControl {
 	 * @param  IControl
 	 * @return bool
 	 */
-	public static function validateDateValid(IFormControl $control) {
+	public static function validateDateInputValid(IFormControl $control) {
 		return self::validateValid($control);
 	}
 
@@ -189,7 +189,7 @@ class DateInput extends FormControl {
 	 * @param array $args
 	 * @return bool
 	 */
-	public static function validateDateRange(self $control) {
+	public static function validateDateInputRange(self $control) {
 		if ($control->range['min'] !== null) {
 			if ($control->range['min'] >= $control->value) {
 				return false;
