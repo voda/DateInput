@@ -205,14 +205,14 @@
 
 			// create alt field
 			this.type = 'text';
-			var alt = t.clone().attr('id', null);
+			var alt = t.clone().removeAttr('id');
 			try {
 				alt.get(0).type = 'hidden';
 			} catch (exception) {
 				// fix for: http://webbugtrack.blogspot.com/2007/09/bug-237-type-is-readonly-attribute-in.html
 				alt = $(alt.get(0).outerHTML.replace(/ type=(['"]?)[a-z-]+\1/, ' type="hidden"'));
 			}
-			t.attr('name', null);
+			t.removeAttr('name');
 			t.val(null);
 			t.after(alt);
 			t.data('altField', alt);
@@ -262,11 +262,11 @@
 								minute: selectedDate.getMinutes(),
 								second: selectedDate.getSeconds()
 							};
-							if (type == 'datetime') {
-								alt.val($.datepicker.formatDate('yy-mm-dd', selectedDate) + 'T' + $.timepicker._formatTime(tp, 'hh:mm:ss', false) + 'Z');
-							} else {
-								alt.val($.datepicker.formatDate('yy-mm-dd', selectedDate) + 'T' + $.timepicker._formatTime(tp, 'hh:mm:ss', false));
+							var value = $.datepicker.formatDate('yy-mm-dd', selectedDate) + 'T' + $.timepicker._formatTime(tp, 'hh:mm:ss', false);
+							if (type == 'datetime-local') {
+								value += 'Z';
 							}
+							alt.val(value);
 						}
 					});
 					break;

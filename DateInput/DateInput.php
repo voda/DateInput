@@ -116,17 +116,18 @@ class DateInput extends BaseControl  {
 	 */
 	public function getControl() {
 		$control = parent::getControl();
+		$format = self::$formats[$this->type];
 		if ($this->value !== null) {
-			$control->value = $this->value->format(self::$formats[$this->type]);
+			$control->value = $this->value->format($format);
 		}
 		if ($this->submitedValue !== null && is_string($this->submitedValue)) {
 			$control->value = $this->submitedValue;
 		}
 		if ($this->range['min'] !== null) {
-			$control->min = $this->range['min']->format(self::$formats[$this->type]);
+			$control->min = $this->range['min']->format($format);
 		}
 		if ($this->range['max'] !== null) {
-			$control->max = $this->range['max']->format(self::$formats[$this->type]);
+			$control->max = $this->range['max']->format($format);
 		}
 		return $control;
 	}
@@ -203,6 +204,11 @@ class DateInput extends BaseControl  {
 		return true;
 	}
 
+	/**
+	 *
+	 * @param string $value
+	 * @return \DateTime
+	 */
 	private function parseValue($value) {
 		$date = null;
 		if ($this->type === self::TYPE_WEEK) {
@@ -215,5 +221,17 @@ class DateInput extends BaseControl  {
 			$date = \DateTime::createFromFormat('!'.self::$formats[$this->type], $value);
 		}
 		return $date;
+	}
+
+	/**
+	 *
+	 * @param \DateTime $value
+	 * @return string
+	 */
+	private function formatDate(\DateTime $value = null) {
+		if ($value) {
+			$value = $value->format(self::$formats[$this->type]);
+		}
+		return $value;
 	}
 }
