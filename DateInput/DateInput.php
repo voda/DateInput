@@ -196,12 +196,12 @@ class DateInput extends FormControl {
 	 */
 	public static function validateRange(self $control) {
 		if ($control->range['min'] !== null) {
-			if ($control->range['min'] > $control->getValue()) {
+			if ($control->range['min'] >= $control->value) {
 				return false;
 			}
 		}
 		if ($control->range['max'] !== null) {
-			if ($control->range['max'] < $control->getValue()) {
+			if ($control->range['max'] <= $control->value) {
 				return false;
 			}
 		}
