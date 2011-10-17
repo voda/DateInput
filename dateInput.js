@@ -263,7 +263,7 @@
 								second: selectedDate.getSeconds()
 							};
 							var value = $.datepicker.formatDate('yy-mm-dd', selectedDate) + 'T' + $.timepicker._formatTime(tp, 'hh:mm:ss', false);
-							if (type == 'datetime-local') {
+							if (type == 'datetime') {
 								value += 'Z';
 							}
 							alt.val(value);
