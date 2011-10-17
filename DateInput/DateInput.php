@@ -142,11 +142,11 @@ class DateInput extends FormControl {
 		if ($operation === \Nette\Forms\Form::RANGE) {
 			$this->range['min'] = $arg[0];
 			$this->range['max'] = $arg[1];
-			$operation = ':dateRange';
+			$operation = ':dateInputRange';
 			$arg[0] = $this->formatDate($arg[0]);
 			$arg[1] = $this->formatDate($arg[1]);
 		} elseif ($operation === \Nette\Forms\Form::VALID) {
-			$operation = ':dateValid';
+			$operation = ':dateInputValid';
 		}
 		return parent::addRule($operation, $message, $arg);
 	}
