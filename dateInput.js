@@ -250,6 +250,7 @@
 						onSelect: function(dateText, inst) {
 							if (!selectedDate) {
 								selectedDate = new Date();
+								selectedDate.setHours(0, 0, 0, 0);
 							}
 							if (inst.hour !== undefined) {
 								selectedDate.setHours(inst.hour, inst.minute, inst.second);
