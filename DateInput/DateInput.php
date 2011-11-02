@@ -70,6 +70,8 @@ class DateInput extends BaseControl  {
 			$form->addComponent($component, $name);
 			return $component;
 		});
+		\Nette\Forms\Rules::$defaultMessages[':dateInputRange'] = \Nette\Forms\Rules::$defaultMessages[\Nette\Forms\Form::RANGE];
+		\Nette\Forms\Rules::$defaultMessages[':dateInputValid'] = 'Please enter a valid date.';
 	}
 
 	public function __construct($label = null, $type = self::TYPE_DATETIME_LOCAL) {
