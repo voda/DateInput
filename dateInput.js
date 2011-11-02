@@ -37,7 +37,7 @@
 	/***************************************************************************
 	 * override datepicker formatDate method for week formating support
 	 **************************************************************************/
-	$.datepicker._base_formatDate = $.datepicker.formatDate;
+	var proxied = $.datepicker.formatDate;
 	$.datepicker.formatDate = function(format, date, settings) {
 		// mostly from jquery.ui.datepicker.js
 		if (!date)
@@ -61,29 +61,28 @@
 		var calculateWeek = (settings ? settings.calculateWeek : null) || this._defaults.calculateWeek;
 		var output = '';
 		var literal = false;
-		if (date)
-			for (var iFormat = 0; iFormat < format.length; iFormat++) {
-				if (literal)
-					if (format.charAt(iFormat) == "'") {
+		for (var iFormat = 0; iFormat < format.length; iFormat++) {
+			if (literal) {
+				if (format.charAt(iFormat) == "'") {
+					literal = false;
+				}
+				output += format.charAt(iFormat);
+			} else {
+				switch (format.charAt(iFormat)) {
+					case 'w':
+						output += formatNumber('w', calculateWeek(date), 2);
+						break;
+					case "'":
 						output += "'";
-						literal = false;
-					}
-					else
+						literal = true;
+						break;
+					default:
 						output += format.charAt(iFormat);
-				else
-					switch (format.charAt(iFormat)) {
-						case 'w':
-							output += formatNumber('w', calculateWeek(date), 2);
-							break;
-						case "'":
-							output += "'";
-							literal = true;
-							break;
-						default:
-							output += format.charAt(iFormat);
-					}
-			};
-		return this._base_formatDate(output, date, settings);
+				}
+			}
+		};
+		arguments[0] = output;
+		return proxied.apply(this, arguments);
 	}
 	/***************************************************************************
 	 * date parsing functions
