@@ -32,7 +32,6 @@
  * http://stackoverflow.com/questions/2208480/jquery-date-picker-to-show-month-year-only
  * http://stackoverflow.com/questions/2224135/can-i-highlight-an-entire-week-in-the-standard-jquery-ui-date-picker
  * http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
- * http://stackoverflow.com/questions/2224135/can-i-highlight-an-entire-week-in-the-standard-jquery-ui-date-picker
  */
 (function($) {
 	/***************************************************************************
