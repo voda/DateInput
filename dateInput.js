@@ -155,7 +155,7 @@
 				return object.datetimepicker(settings);
 			},
 			dateFormat: 'yy-mm-dd',
-			timeFormat: 'hh:mm',
+			timeFormat: 'HH:mm',
 			validFormat: '\\d{4}-\\d{2}-\\d{2}'
 		},
 		date: {
@@ -187,7 +187,7 @@
 			create: function(object, settings) {
 				return object.timepicker(settings);
 			},
-			timeFormat: 'hh:mm',
+			timeFormat: 'HH:mm',
 			validFormat: '\\d{2}:\\d{2}'
 		}
 	};
@@ -216,7 +216,13 @@
 			t.after(alt);
 			t.data('altField', alt);
 
-			var pickerSettings = {};
+			 var pickerSettings = {
+				onClose: function(date, inst) {
+					if (date === '') {
+						alt.val('');
+					}
+				}
+			};
 
 			// min and max date
 			var min = alt.attr('min');
@@ -237,6 +243,7 @@
 			}
 			if (settings.timeFormat) {
 				pickerSettings.timeFormat = settings.timeFormat;
+				pickerSettings.pickerTimeFormat = settings.timeFormat;
 			}
 
 			//
@@ -244,29 +251,15 @@
 				case 'datetime':
 				case 'datetime-local':
 					$.extend(pickerSettings, {
+						altFieldTimeOnly: false,
+						altField: alt,
+						altFormat: 'yy-mm-dd',
+						altSeparator: 'T',
+						altTimeFormat: 'HH:mm:ss',
+						altTimeSuffix: type === 'datetime' ? 'Z' : '',
 						stepHour: 1,
 						stepMinute: 1,
-						showButtonPanel: true,
-						onSelect: function(dateText, inst) {
-							if (!selectedDate) {
-								selectedDate = new Date();
-							}
-							if (inst.hour !== undefined) {
-								selectedDate.setHours(inst.hour, inst.minute, inst.second);
-							} else {
-								selectedDate.setFullYear(inst.selectedYear, inst.selectedMonth, inst.selectedDay);
-							}
-							var tp = {
-								hour: selectedDate.getHours(),
-								minute: selectedDate.getMinutes(),
-								second: selectedDate.getSeconds()
-							};
-							if (type == 'datetime') {
-								alt.val($.datepicker.formatDate('yy-mm-dd', selectedDate) + 'T' + $.timepicker._formatTime(tp, 'hh:mm:ss', false) + 'Z');
-							} else {
-								alt.val($.datepicker.formatDate('yy-mm-dd', selectedDate) + 'T' + $.timepicker._formatTime(tp, 'hh:mm:ss', false));
-							}
-						}
+						showButtonPanel: true
 					});
 					break;
 				case 'date':
@@ -348,12 +341,16 @@
 					break;
 				case 'time':
 					$.extend(pickerSettings, {
+						altFieldTimeOnly: false,
+						altField: alt,
+						altFormat: '',
+						dateFormat: '',
+						altSeparator: '',
+						separator: '',
+						altTimeFormat: 'HH:mm:ss',
 						stepHour: 1,
 						stepMinute: 1,
-						showButtonPanel: true,
-						onSelect: function(day, inst) {
-							alt.val($.timepicker._formatTime(inst, 'hh:mm:ss', false));
-						}
+						showButtonPanel: true
 					});
 					break;
 			}
