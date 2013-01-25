@@ -74,6 +74,11 @@ class DateInput extends BaseControl  {
 		\Nette\Forms\Rules::$defaultMessages[':dateInputValid'] = 'Please enter a valid date.';
 	}
 
+	/**
+	 * @param string
+	 * @param string
+	 * @throws \InvalidArgumentException
+	 */
 	public function __construct($label = null, $type = self::TYPE_DATETIME_LOCAL) {
 		if (!isset(self::$formats[$type])) {
 			throw new \InvalidArgumentException("invalid type '$type' given.");
@@ -83,11 +88,6 @@ class DateInput extends BaseControl  {
 		$this->control->data('dateinput-type', $type);
 	}
 
-	/**
-	 * Sets control's value.
-	 * @param  mixed
-	 * @return BaseControl  provides a fluent interface
-	 */
 	public function setValue($value = null) {
 		if ($value === null || $value instanceof \DateTime) {
 			$this->value = $value;
@@ -112,10 +112,6 @@ class DateInput extends BaseControl  {
 		return $this;
 	}
 
-	/**
-	 * Returns control's value.
-	 * @return mixed
-	 */
 	public function getControl() {
 		$control = parent::getControl();
 		$format = self::$formats[$this->type];
@@ -134,14 +130,7 @@ class DateInput extends BaseControl  {
 		return $control;
 	}
 
-	/**
-	 * Adds a validation rule.
-	 * @param  mixed      rule type
-	 * @param  string     message to display for invalid data
-	 * @param  mixed      optional rule arguments
-	 * @return BaseControl  provides a fluent interface
-	 */
-	public function addRule($operation, $message = NULL, $arg = NULL) {
+	public function addRule($operation, $message = null, $arg = null) {
 		if ($operation === \Nette\Forms\Form::RANGE) {
 			$this->range['min'] = $arg[0];
 			$this->range['max'] = $arg[1];
@@ -154,11 +143,6 @@ class DateInput extends BaseControl  {
 		return parent::addRule($operation, $message, $arg);
 	}
 
-	/**
-	 * Filled validator: is control filled?
-	 * @param  IControl
-	 * @return bool
-	 */
 	public static function validateFilled(IControl $control) {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
@@ -175,11 +159,6 @@ class DateInput extends BaseControl  {
 		return self::validateValid($control);
 	}
 
-	/**
-	 * Valid validator: is control valid?
-	 * @param  IControl
-	 * @return bool
-	 */
 	public static function validateValid(IControl $control) {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
@@ -207,7 +186,6 @@ class DateInput extends BaseControl  {
 	}
 
 	/**
-	 *
 	 * @param string $value
 	 * @return \DateTime
 	 */
@@ -226,7 +204,6 @@ class DateInput extends BaseControl  {
 	}
 
 	/**
-	 *
 	 * @param \DateTime $value
 	 * @return string
 	 */
