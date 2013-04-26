@@ -196,6 +196,9 @@
 	$.fn.dateinput = function(userSettings) {
 		this.each(function() {
 			var t = $(this);
+			if (t.data('altField')) {
+				return;
+			}
 			var type = t.attr('data-dateinput-type');
 			var settings = globalSettings[type];
 			userSettings = userSettings || {};
@@ -210,6 +213,7 @@
 				// fix for: http://webbugtrack.blogspot.com/2007/09/bug-237-type-is-readonly-attribute-in.html
 				alt = $(alt.get(0).outerHTML.replace(/ type=(['"]?)[a-z-]+\1/, ' type="hidden"'));
 			}
+			alt.attr('data-dateinput-type', null);
 			t.removeAttr('name');
 			t.val(null);
 			t.after(alt);
