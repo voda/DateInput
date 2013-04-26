@@ -33,29 +33,34 @@
  * http://stackoverflow.com/questions/2224135/can-i-highlight-an-entire-week-in-the-standard-jquery-ui-date-picker
  * http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
  */
-(function($) {
+(function($, Nette) {
+	"use strict";
 	/***************************************************************************
 	 * override datepicker formatDate method for week formating support
 	 **************************************************************************/
 	var proxied = $.datepicker.formatDate;
 	$.datepicker.formatDate = function(format, date, settings) {
 		// mostly from jquery.ui.datepicker.js
-		if (!date)
+		if (!date) {
 			return '';
+		}
 
 		// Check whether a format character is doubled
 		var lookAhead = function(match) {
-			var matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) == match);
-			if (matches)
+			var matches = (iFormat + 1 < format.length && format.charAt(iFormat + 1) === match);
+			if (matches) {
 				iFormat++;
+			}
 			return matches;
 		};
 		// Format a number, with leading zero if necessary
 		var formatNumber = function(match, value, len) {
 			var num = '' + value;
-			if (lookAhead(match))
-				while (num.length < len)
+			if (lookAhead(match)) {
+				while (num.length < len) {
 					num = '0' + num;
+				}
+			}
 			return num;
 		};
 		var calculateWeek = (settings ? settings.calculateWeek : null) || this._defaults.calculateWeek;
@@ -63,7 +68,7 @@
 		var literal = false;
 		for (var iFormat = 0; iFormat < format.length; iFormat++) {
 			if (literal) {
-				if (format.charAt(iFormat) == "'") {
+				if (format.charAt(iFormat) === "'") {
 					literal = false;
 				}
 				output += format.charAt(iFormat);
@@ -80,16 +85,16 @@
 						output += format.charAt(iFormat);
 				}
 			}
-		};
+		}
 		arguments[0] = output;
 		return proxied.apply(this, arguments);
-	}
-	/***************************************************************************
+	};
+	/* *************************************************************************
 	 * date parsing functions
 	 **************************************************************************/
 	var parseWeek = function(date) {
 		// 2011-W05
-		if (date.length  != 8) {
+		if (date.length  !== 8) {
 			return null;
 		}
 		var year = parseInt(date.substr(0,4), 10);
@@ -97,14 +102,14 @@
 
 		var correctionDate = new Date(year, 0, 4);
 		var correction = correctionDate.getDay();
-		if (correction == 0) {
+		if (correction === 0) {
 			correction = 7;
 		}
 		correction += 3;
 		// let the Date object do the math for calculating the correct month and day
 		var day = new Date(year, 0, (week * 7) + 1 - correction);
 		return day;
-	}
+	};
 	var parseTime = function(time) {
 		// 12:12[:12]
 		if (time.length < 5) {
@@ -117,7 +122,7 @@
 			(time.lengt >= 8) ? parseInt(time.substr(6, 2), 10) : 0 //second
 			);
 		return d;
-	}
+	};
 	var parseDate = function(datetime) {
 		// 2011-05-08
 		if (datetime.length < 10) {
@@ -128,13 +133,13 @@
 			parseInt(datetime.substr(5, 2), 10) - 1, //month
 			parseInt(datetime.substr(8, 2), 10) //day
 			);
-	}
+	};
 	var parseDateTime = function(datetime) {
 		// 2011-05-08T12:12[:12]
 		if (datetime.length < 19) {
 			return null;
 		}
-		var date = parseDate(datetime)
+		var date = parseDate(datetime);
 		var time = parseTime(datetime.substr(11));
 		date.setHours(
 			time.getHours(),
@@ -142,11 +147,11 @@
 			time.getSeconds()
 			);
 		return date;
-	}
+	};
 	var parseMonth = function(date) {
 		// 2011-05
 		return parseDate(date + '-01');
-	}
+	};
 	var globalSettings = {
 		datetime: {
 			parseFunction: parseDateTime,
@@ -219,8 +224,8 @@
 			t.after(alt);
 			t.data('altField', alt);
 
-			 var pickerSettings = {
-				onClose: function(date, inst) {
+			var pickerSettings = {
+				onClose: function(date) {
 					if (date === '') {
 						alt.val('');
 					}
@@ -230,11 +235,11 @@
 			// min and max date
 			var min = alt.attr('min');
 			if (min) {
-				pickerSettings['minDate'] = settings.parseFunction(min);
+				pickerSettings.minDate = settings.parseFunction(min);
 			}
 			var max = alt.attr('max');
 			if (max) {
-				pickerSettings['maxDate'] = settings.parseFunction(max);
+				pickerSettings.maxDate = settings.parseFunction(max);
 			}
 			var selectedDate = null;
 			var date = alt.val();
@@ -279,7 +284,7 @@
 						altFormat: 'yy-mm',
 						showButtonPanel: true,
 						showOtherMonths: true,
-						beforeShow: function(input, inst) {
+						beforeShow: function() {
 							if (selectedDate) {
 								$(this).datepicker('option', 'defaultDate', selectedDate);
 								$(this).datepicker('setDate', selectedDate);
@@ -287,11 +292,11 @@
 						},
 						beforeShowDay: function(day) {
 							var c = 'ui-datepicker-month';
-							if (selectedDate && selectedDate.getFullYear() == day.getFullYear() && selectedDate.getMonth() == day.getMonth()) {
+							if (selectedDate && selectedDate.getFullYear() === day.getFullYear() && selectedDate.getMonth() === day.getMonth()) {
 								c += ' ui-datepicker-month-selected';
 							}
 							var now = new Date();
-							if (day.getFullYear() == now.getFullYear() && day.getMonth() == now.getMonth()) {
+							if (day.getFullYear() === now.getFullYear() && day.getMonth() === now.getMonth()) {
 								c += ' ui-datepicker-month-current';
 							}
 							return [true, c];
@@ -302,8 +307,8 @@
 							inst.input.blur();
 						}
 					});
-					if (pickerSettings['maxDate']) {
-						pickerSettings['maxDate'].setMonth(pickerSettings['maxDate'].getMonth() + 1, 0);
+					if (pickerSettings.maxDate) {
+						pickerSettings.maxDate.setMonth(pickerSettings.maxDate.getMonth() + 1, 0);
 					}
 					break;
 				case 'week':
@@ -321,11 +326,11 @@
 						},
 						beforeShowDay: function(day) {
 							var c = 'ui-datepicker-week';
-							if (selectedDate && $.datepicker.iso8601Week(selectedDate) == $.datepicker.iso8601Week(day) && selectedDate.getFullYear() == day.getFullYear()) {
+							if (selectedDate && $.datepicker.iso8601Week(selectedDate) === $.datepicker.iso8601Week(day) && selectedDate.getFullYear() === day.getFullYear()) {
 								c += ' ui-datepicker-week-selected';
 							}
 							var now = new Date();
-							if ($.datepicker.iso8601Week(day) == $.datepicker.iso8601Week(now) && day.getFullYear() == now.getFullYear()) {
+							if ($.datepicker.iso8601Week(day) === $.datepicker.iso8601Week(now) && day.getFullYear() === now.getFullYear()) {
 								c += ' ui-datepicker-week-current';
 							}
 							return [true, c];
@@ -338,8 +343,8 @@
 							inst.input.blur();
 						}
 					});
-					if (pickerSettings['maxDate']) {
-						pickerSettings['maxDate'].setDate(pickerSettings['maxDate'].getDate() + 6); // move from monday to sunday
+					if (pickerSettings.maxDate) {
+						pickerSettings.maxDate.setDate(pickerSettings.maxDate.getDate() + 6); // move from monday to sunday
 					}
 					break;
 				case 'time':
@@ -380,4 +385,4 @@
 		val = el.data('altField').val();
 		return Nette.isArray(arg) ? ((arg[0] === null || val >= arg[0]) && (arg[1] === null || val <= arg[1])) : null;
 	};
-})(jQuery);
+})(jQuery, Nette);
