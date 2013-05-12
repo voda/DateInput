@@ -132,8 +132,8 @@ class DateInput extends BaseControl  {
 
 	public function addRule($operation, $message = null, $arg = null) {
 		if ($operation === \Nette\Forms\Form::RANGE) {
-			$this->range['min'] = $arg[0];
-			$this->range['max'] = $arg[1];
+			$this->range['min'] = $this->normalizeDate($arg[0]);
+			$this->range['max'] = $this->normalizeDate($arg[1]);
 			$operation = ':dateInputRange';
 			$arg[0] = $this->formatDate($arg[0]);
 			$arg[1] = $this->formatDate($arg[1]);
@@ -210,6 +210,18 @@ class DateInput extends BaseControl  {
 	private function formatDate(\DateTime $value = null) {
 		if ($value) {
 			$value = $value->format(self::$formats[$this->type]);
+		}
+		return $value;
+	}
+
+	/**
+	 * @param \DateTime
+	 * @return \DateTime
+	 */
+	private function normalizeDate(\DateTime $value = null) {
+		if ($value) {
+			$value = $this->formatDate($value);
+			$value = $this->parseValue($value);
 		}
 		return $value;
 	}
