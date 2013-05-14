@@ -206,8 +206,25 @@
 			}
 			var type = t.attr('data-dateinput-type');
 			var settings = globalSettings[type];
+
+			var pickerSettings = {
+				onClose: function(date) {
+					if (date === '') {
+						alt.val('');
+					}
+				}
+			};
+
 			userSettings = userSettings || {};
-			$.extend(settings, userSettings[type] || {});
+			if (userSettings.options) {
+				$.extend(pickerSettings, userSettings.options);
+			}
+			if (userSettings[type]) {
+				$.extend(settings, userSettings[type]);
+				if (userSettings[type].options) {
+					$.extend(pickerSettings, userSettings[type].options);
+				}
+			}
 
 			// create alt field
 			this.type = 'text';
@@ -223,14 +240,6 @@
 			t.val(null);
 			t.after(alt);
 			t.data('altField', alt);
-
-			var pickerSettings = {
-				onClose: function(date) {
-					if (date === '') {
-						alt.val('');
-					}
-				}
-			};
 
 			// min and max date
 			var min = alt.attr('min');
