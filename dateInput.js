@@ -236,6 +236,7 @@
 				alt = $(alt.get(0).outerHTML.replace(/ type=(['"]?)[a-z-]+\1/, ' type="hidden"'));
 			}
 			alt.attr('data-dateinput-type', null);
+			alt.attr('data-nette-rules', null);
 			t.removeAttr('name');
 			t.val(null);
 			t.after(alt);
@@ -382,14 +383,14 @@
 	};
 
 	// Nette validators
-	Nette.validators.dateInputValid = function(elem, arg, val) {
+	Nette.validators["VodacekFormsControlsDateInput_validateDateInputValid"] = function(elem, arg, val) {
 		var el = $(elem);
 		var type = el.attr('data-dateinput-type');
 		var format = globalSettings[type].validFormat;
 		val = el.data('altField').val();
 		return (new RegExp('^(' + format + ')$')).test(val);
 	};
-	Nette.validators.dateInputRange = function(elem, arg, val) {
+	Nette.validators["VodacekFormsControlsDateInput_validateDateInputRange"] = function(elem, arg, val) {
 		var el = $(elem);
 		val = el.data('altField').val();
 		return Nette.isArray(arg) ? ((arg[0] === null || val >= arg[0]) && (arg[1] === null || val <= arg[1])) : null;

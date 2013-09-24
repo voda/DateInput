@@ -70,8 +70,8 @@ class DateInput extends BaseControl  {
 			$form->addComponent($component, $name);
 			return $component;
 		});
-		\Nette\Forms\Rules::$defaultMessages[':dateInputRange'] = \Nette\Forms\Rules::$defaultMessages[\Nette\Forms\Form::RANGE];
-		\Nette\Forms\Rules::$defaultMessages[':dateInputValid'] = 'Please enter a valid date.';
+		\Nette\Forms\Rules::$defaultMessages[__CLASS__.'::validateDateInputRange'] = \Nette\Forms\Rules::$defaultMessages[\Nette\Forms\Form::RANGE];
+		\Nette\Forms\Rules::$defaultMessages[__CLASS__.'::validateDateInputValid'] = 'Please enter a valid date.';
 	}
 
 	/**
@@ -134,11 +134,11 @@ class DateInput extends BaseControl  {
 		if ($operation === \Nette\Forms\Form::RANGE) {
 			$this->range['min'] = $this->normalizeDate($arg[0]);
 			$this->range['max'] = $this->normalizeDate($arg[1]);
-			$operation = ':dateInputRange';
+			$operation = __CLASS__.'::validateDateInputRange';
 			$arg[0] = $this->formatDate($arg[0]);
 			$arg[1] = $this->formatDate($arg[1]);
 		} elseif ($operation === \Nette\Forms\Form::VALID) {
-			$operation = ':dateInputValid';
+			$operation = __CLASS__.'::validateDateInputValid';
 		}
 		return parent::addRule($operation, $message, $arg);
 	}
