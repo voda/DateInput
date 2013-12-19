@@ -60,7 +60,7 @@ class DateInput extends BaseControl  {
 		self::TYPE_DATE => 'Y-m-d',
 		self::TYPE_MONTH => 'Y-m',
 		self::TYPE_TIME => 'H:i:s',
-		self::TYPE_WEEK => 'Y-\WW'
+		self::TYPE_WEEK => 'o-\WW'
 	);
 
 	public static function register() {

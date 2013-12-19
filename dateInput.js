@@ -63,7 +63,6 @@
 			}
 			return num;
 		};
-		var calculateWeek = (settings ? settings.calculateWeek : null) || this._defaults.calculateWeek;
 		var output = '';
 		var literal = false;
 		for (var iFormat = 0; iFormat < format.length; iFormat++) {
@@ -75,7 +74,7 @@
 			} else {
 				switch (format.charAt(iFormat)) {
 					case 'w':
-						output += formatNumber('w', calculateWeek(date), 2);
+						output += formatNumber('w', $.datepicker.iso8601Week(date), 2);
 						break;
 					case "'":
 						output += "'";
@@ -105,7 +104,6 @@
 		if (correction === 0) {
 			correction = 7;
 		}
-		correction += 3;
 		// let the Date object do the math for calculating the correct month and day
 		var day = new Date(year, 0, (week * 7) + 1 - correction);
 		return day;
@@ -347,8 +345,8 @@
 						},
 						onSelect: function(day, inst) {
 							selectedDate = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay);
-							// move to monday
-							selectedDate.setDate(selectedDate.getDate() - (selectedDate.getDay() + 6) % 7);
+							// move to thursday
+							selectedDate.setDate(selectedDate.getDate() - ((selectedDate.getDay() + 6) % 7) + 3);
 							t.datepicker('setDate', selectedDate);
 							inst.input.blur();
 						}
