@@ -92,6 +92,9 @@ class DateInput extends BaseControl  {
 		if ($value === null || $value instanceof \DateTime) {
 			$this->value = $value;
 			$this->submitedValue = null;
+		} elseif ($value instanceof \DateInterval) {
+			$this->value = \DateTime::createFromFormat(self::$formats[self::TYPE_TIME], $value->format("%H:%I:%S"));
+			$this->submitedValue = null;
 		} elseif (is_string($value)) {
 			if ($value === '') {
 				$this->value = null;
