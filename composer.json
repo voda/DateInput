@@ -12,5 +12,8 @@
 	},
 	"autoload": {
 		"psr-0": {"Vodacek\\Forms\\Controls\\DateInput" : ""}
+	},
+	"require-dev": {
+		"nette/tester": "~1.0.0"
 	}
 }
