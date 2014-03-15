@@ -11,7 +11,7 @@
 		"nette/nette": "2.*"
 	},
 	"autoload": {
-		"psr-0": {"Vodacek\\Forms\\Controls\\DateInput" : ""}
+		"psr-4": {"Vodacek\\Forms\\Controls\\" : "src"}
 	},
 	"require-dev": {
 		"nette/tester": "~1.0.0"
