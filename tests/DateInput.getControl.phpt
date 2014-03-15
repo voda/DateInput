@@ -11,7 +11,9 @@ test(function() {
 	$form->addComponent($control, 'input');
 
 	Assert::type('Nette\Utils\Html', $control->getControl());
-	Assert::same('<input type="datetime-local" name="input" data-dateinput-type="datetime-local" id="frm-input">', (string)$control->getControl());
+	Assert::same('input', $control->getControl()->getName());
+	Assert::contains('type="datetime-local"', (string)$control->getControl());
+	Assert::contains('data-dateinput-type="datetime-local"', (string)$control->getControl());
 });
 
 test(function() { // min & max attributes

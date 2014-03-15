@@ -11,9 +11,15 @@ test(function() { // valid submitted value
 	Assert::equal(new DateTime('2014-02-14 00:00:00'), $control->getValue());
 });
 
-test(function() { // no value
+test(function() { // null value
 	$control = new DateInput('date', DateInput::TYPE_DATE);
 	$control->setValue(null);
+	Assert::equal(null, $control->getValue());
+});
+
+test(function() { // no value
+	$control = new DateInput('date', DateInput::TYPE_DATE);
+	$control->setValue('');
 	Assert::equal(null, $control->getValue());
 });
 

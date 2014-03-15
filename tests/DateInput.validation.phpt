@@ -7,14 +7,12 @@ require __DIR__ . '/bootstrap.php';
 
 test(function() { // no value and valid value
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
-	$control->validate();
-	Assert::false($control->isFilled());
-	Assert::same(array(), $control->getErrors());
+	Assert::false(DateInput::validateFilled($control));
+	Assert::true(DateInput::validateValid($control));
 
 	$control->setValue('2014-01-01T12:00:00');
-	$control->validate();
-	Assert::true($control->isFilled());
-	Assert::same(array(), $control->getErrors());
+	Assert::true(DateInput::validateFilled($control));
+	Assert::true(DateInput::validateValid($control));
 });
 
 test(function() { // invalid value
@@ -24,9 +22,9 @@ test(function() { // invalid value
 	$form->addComponent($control, 'input');
 
 	$control->setValue('invalid value');
-	$control->validate();
-	Assert::false($control->isFilled());
-	Assert::same(array('validation message'), $control->getErrors());
+	$form->validate();
+	Assert::true(DateInput::validateFilled($control));
+	Assert::same(array('validation message'), $form->getErrors());
 });
 
 test(function() { // range condition
@@ -35,15 +33,18 @@ test(function() { // range condition
 	$control->addRule(\Nette\Forms\Form::RANGE, 'invalid range', array(new DateTime('2014-01-01'), new DateTime('2014-12-31')));
 	$form->addComponent($control, 'input');
 
+	$form->cleanErrors();
 	$control->setValue('2013-01-01');
-	$control->validate();
-	Assert::same(array('invalid range'), $control->getErrors());
+	$form->validate();
+	Assert::same(array('invalid range'), $form->getErrors());
 
+	$form->cleanErrors();
 	$control->setValue('2015-01-01');
-	$control->validate();
-	Assert::same(array('invalid range'), $control->getErrors());
+	$form->validate();
+	Assert::same(array('invalid range'), $form->getErrors());
 
+	$form->cleanErrors();
 	$control->setValue('2014-06-01');
-	$control->validate();
-	Assert::same(array(), $control->getErrors());
+	$form->validate();
+	Assert::same(array(), $form->getErrors());
 });
