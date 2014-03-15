@@ -5,7 +5,13 @@ php:
   - 5.4
   - 5.3.3
 
+env:
+    - NETTE_VERSION="~2.0.0"
+    - NETTE_VERSION="~2.1.0"
+    - NETTE_VERSION="dev-master"
+
 before_script:
   - composer install --dev --no-interaction --prefer-source
+  - composer require --dev --no-interaction --prefer-source nette/nette:${NETTE_VERSION}
 
 script: ./vendor/bin/tester tests
