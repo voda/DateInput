@@ -117,7 +117,7 @@
 		d.setHours(
 			parseInt(time.substr(0, 2), 10), //hour
 			parseInt(time.substr(3, 2), 10), //minute
-			(time.lengt >= 8) ? parseInt(time.substr(6, 2), 10) : 0 //second
+			(time.length >= 8) ? parseInt(time.substr(6, 2), 10) : 0 //second
 			);
 		return d;
 	};
