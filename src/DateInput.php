@@ -29,7 +29,8 @@
 namespace Vodacek\Forms\Controls;
 
 use Nette\Forms\IControl,
-	Nette\Forms\Controls\BaseControl;
+	Nette\Forms\Controls\BaseControl,
+	Nette\Utils\DateTime;
 
 /**
  * @author Ondřej Vodáček <ondrej.vodacek@gmail.com>
@@ -190,13 +191,13 @@ class DateInput extends BaseControl  {
 
 	/**
 	 * @param string $value
-	 * @return \DateTime
+	 * @return DateTime
 	 */
 	private function parseValue($value) {
 		$date = null;
 		if ($this->type === self::TYPE_WEEK) {
 			try {
-				$date = new \DateTime($value."1");
+				$date = new DateTime($value."1");
 			} catch (\Exception $e) {
 				$date = false;
 			}
@@ -219,7 +220,7 @@ class DateInput extends BaseControl  {
 
 	/**
 	 * @param \DateTime
-	 * @return \DateTime
+	 * @return DateTime
 	 */
 	private function normalizeDate(\DateTime $value = null) {
 		if ($value) {
