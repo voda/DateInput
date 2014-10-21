@@ -90,11 +90,14 @@ class DateInput extends BaseControl  {
 	}
 
 	public function setValue($value = null) {
-		if ($value === null || $value instanceof \DateTime) {
-			$this->value = $value;
+		if ($value === null) {
+			$this->value = null;
+			$this->submitedValue = null;
+		} elseif ($value instanceof \DateTime) {
+			$this->value = DateTime::from($value);
 			$this->submitedValue = null;
 		} elseif ($value instanceof \DateInterval) {
-			$this->value = \DateTime::createFromFormat(self::$formats[self::TYPE_TIME], $value->format("%H:%I:%S"));
+			$this->value = DateTime::createFromFormat(self::$formats[self::TYPE_TIME], $value->format("%H:%I:%S"));
 			$this->submitedValue = null;
 		} elseif (is_string($value)) {
 			if ($value === '') {
@@ -203,6 +206,9 @@ class DateInput extends BaseControl  {
 			}
 		} else {
 			$date = \DateTime::createFromFormat('!'.self::$formats[$this->type], $value);
+			if ($date !== false) {
+				$date = DateTime::from($date);
+			}
 		}
 		return $date;
 	}
