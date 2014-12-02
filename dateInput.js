@@ -193,6 +193,7 @@
 			validFormat: '\\d{2}:\\d{2}'
 		}
 	};
+	globalSettings['date-of-birth'] = globalSettings.date;
 	globalSettings['datetime-local'] = globalSettings.datetime;
 	globalSettings['datetime-local'].validFormat += '.*'; // timezone
 
@@ -279,6 +280,7 @@
 					});
 					break;
 				case 'date':
+				case 'date-of-birth':
 					$.extend(pickerSettings, {
 						altField: alt,
 						altFormat: 'yy-mm-dd',

@@ -42,6 +42,7 @@ class DateInput extends BaseControl  {
 	const TYPE_DATETIME = 'datetime',
 			TYPE_DATETIME_LOCAL = 'datetime-local',
 			TYPE_DATE = 'date',
+			TYPE_DATE_OF_BIRTH = 'date-of-birth',
 			TYPE_MONTH = 'month',
 			TYPE_TIME = 'time',
 			TYPE_WEEK = 'week';
@@ -59,6 +60,7 @@ class DateInput extends BaseControl  {
 		self::TYPE_DATETIME => 'Y-m-d\TH:i:se',
 		self::TYPE_DATETIME_LOCAL => 'Y-m-d\TH:i:s',
 		self::TYPE_DATE => 'Y-m-d',
+		self::TYPE_DATE_OF_BIRTH => 'Y-m-d',
 		self::TYPE_MONTH => 'Y-m',
 		self::TYPE_TIME => 'H:i:s',
 		self::TYPE_WEEK => 'o-\WW'
