@@ -168,6 +168,14 @@
 			dateFormat: 'yy-mm-dd',
 			validFormat: '\\d{4}-\\d{2}-\\d{2}'
 		},
+		'date-of-birth': {
+			parseFunction: parseDate,
+			create: function(object, settings) {
+				return object.datepicker(settings);
+			},
+			dateFormat: 'yy-mm-dd',
+			validFormat: '\\d{4}-\\d{2}-\\d{2}'
+		},
 		month: {
 			parseFunction: parseMonth,
 			create: function(object, settings) {
@@ -193,7 +201,6 @@
 			validFormat: '\\d{2}:\\d{2}'
 		}
 	};
-	globalSettings['date-of-birth'] = globalSettings.date;
 	globalSettings['datetime-local'] = globalSettings.datetime;
 	globalSettings['datetime-local'].validFormat += '.*'; // timezone
 
@@ -280,12 +287,22 @@
 					});
 					break;
 				case 'date':
-				case 'date-of-birth':
 					$.extend(pickerSettings, {
 						altField: alt,
 						altFormat: 'yy-mm-dd',
 						showButtonPanel: true,
 						showOtherMonths: true
+					});
+					break;
+				case 'date-of-birth':
+					$.extend(pickerSettings, {
+						altField: alt,
+						altFormat: 'yy-mm-dd',
+						showButtonPanel: true,
+						showOtherMonths: true,
+						changeMonth: true,
+						changeYear: true,
+						yearRange: "-100:+0"
 					});
 					break;
 				case 'month':
