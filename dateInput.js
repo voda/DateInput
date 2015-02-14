@@ -235,7 +235,6 @@
 			}
 			alt.attr('data-dateinput-type', null);
 			alt.attr('data-nette-rules', null);
-			t.removeAttr('name');
 			t.val(null);
 			t.after(alt);
 			t.data('altField', alt);
