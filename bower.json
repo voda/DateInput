@@ -23,5 +23,8 @@
 		"tests",
 		"changeNetteVersion.sh",
 		"composer.json"
-	]
+	],
+	"dependencies": {
+		"jqueryui-timepicker-addon": ">=1.1.0"
+	}
 }
