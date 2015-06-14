@@ -1,5 +1,5 @@
 {
-	"name": "voda-dateInput",
+	"name": "voda-date-input",
 	"main": [
 		"dateInput.js",
 		"dateInput.css"
