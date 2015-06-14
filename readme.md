@@ -13,6 +13,8 @@ Installation
 
 `$ composer require voda/date-input:~1.0.0`
 
+package can be also installed using bower: `$ bower install voda-date-input --save`
+
 insert required javascript and style files into your layout (order of scripts is important):
 ```html
 <script type='text/javascript' src="{$basePath}/scripts/jquery-ui-timepicker-addon.js"></script>
