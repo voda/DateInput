@@ -8,6 +8,7 @@ env:
   - NETTE_VERSION="~2.0.0"
   - NETTE_VERSION="~2.1.0"
   - NETTE_VERSION="~2.2.0"
+  - NETTE_VERSION="~2.3.0"
   - NETTE_VERSION="dev-master"
 
 before_script:
