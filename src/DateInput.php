@@ -54,7 +54,7 @@ class DateInput extends BaseControl  {
 	/** @var mixed */
 	protected $submitedValue = null;
 
-	private static $formats = array(
+	public static $formats = array(
 		self::TYPE_DATETIME => 'Y-m-d\TH:i:se',
 		self::TYPE_DATETIME_LOCAL => 'Y-m-d\TH:i:s',
 		self::TYPE_DATE => 'Y-m-d',
