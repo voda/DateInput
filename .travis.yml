@@ -1,13 +1,12 @@
 language: php
 php:
-  - 5.6
-  - 5.5
-  - 5.4
+  - '7.0'
+  - '5.6'
 
 env:
-  - NETTE_VERSION="~2.0.0"
   - NETTE_VERSION="~2.1.0"
   - NETTE_VERSION="~2.2.0"
+  - NETTE_VERSION="~2.3.0"
   - NETTE_VERSION="dev-master"
 
 before_script:
