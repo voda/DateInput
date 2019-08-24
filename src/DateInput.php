@@ -54,6 +54,9 @@ class DateInput extends BaseControl  {
 	/** @var mixed */
 	protected $submitedValue = null;
 
+	/** @var string */
+	private static $dateTimeClass = \DateTime::class;
+
 	private static $formats = array(
 		self::TYPE_DATETIME => 'Y-m-d\TH:i:se',
 		self::TYPE_DATETIME_LOCAL => 'Y-m-d\TH:i:s',
@@ -63,7 +66,7 @@ class DateInput extends BaseControl  {
 		self::TYPE_WEEK => 'o-\WW'
 	);
 
-	public static function register() {
+	public static function register($immutable = false) {
 		$class = __CLASS__;
 		\Nette\Forms\Container::extensionMethod('addDate', function (\Nette\Forms\Container $form, $name, $label = null, $type = 'datetime-local') use ($class) {
 			$component = new $class($label, $type);
@@ -72,6 +75,10 @@ class DateInput extends BaseControl  {
 		});
 		\Nette\Forms\Rules::$defaultMessages[__CLASS__.'::validateDateInputRange'] = \Nette\Forms\Rules::$defaultMessages[\Nette\Forms\Form::RANGE];
 		\Nette\Forms\Rules::$defaultMessages[__CLASS__.'::validateDateInputValid'] = 'Please enter a valid date.';
+
+		if ($immutable) {
+			self::$dateTimeClass = \DateTimeImmutable::class;
+		}
 	}
 
 	/**
@@ -88,12 +95,12 @@ class DateInput extends BaseControl  {
 		$this->control->data('dateinput-type', $type);
 	}
 
-	public function setValue($value = null) {
-		if ($value === null || $value instanceof \DateTime) {
+    public function setValue($value = null) {
+		if ($value === null || $value instanceof \DateTimeInterface) {
 			$this->value = $value;
 			$this->submitedValue = null;
 		} elseif ($value instanceof \DateInterval) {
-			$this->value = \DateTime::createFromFormat(self::$formats[self::TYPE_TIME], $value->format("%H:%I:%S"));
+			$this->value = self::createFromFormat(self::$formats[self::TYPE_TIME], $value->format("%H:%I:%S"));
 			$this->submitedValue = null;
 		} elseif (is_string($value)) {
 			if ($value === '') {
@@ -190,27 +197,27 @@ class DateInput extends BaseControl  {
 
 	/**
 	 * @param string $value
-	 * @return \DateTime
+	 * @return \DateTimeInterface
 	 */
 	private function parseValue($value) {
 		$date = null;
 		if ($this->type === self::TYPE_WEEK) {
 			try {
-				$date = new \DateTime($value."1");
+				$date = self::createDateTime($value."1");
 			} catch (\Exception $e) {
 				$date = false;
 			}
 		} else {
-			$date = \DateTime::createFromFormat('!'.self::$formats[$this->type], $value);
+			$date = self::createFromFormat('!'.self::$formats[$this->type], $value);
 		}
 		return $date;
 	}
 
 	/**
-	 * @param \DateTime $value
+	 * @param \DateTimeInterface $value
 	 * @return string
 	 */
-	private function formatDate(\DateTime $value = null) {
+	private function formatDate(\DateTimeInterface $value = null) {
 		if ($value) {
 			$value = $value->format(self::$formats[$this->type]);
 		}
@@ -218,14 +225,24 @@ class DateInput extends BaseControl  {
 	}
 
 	/**
-	 * @param \DateTime
-	 * @return \DateTime
+	 * @param \DateTimeInterface
+	 * @return \DateTimeInterface
 	 */
-	private function normalizeDate(\DateTime $value = null) {
+	private function normalizeDate(\DateTimeInterface $value = null) {
 		if ($value) {
 			$value = $this->formatDate($value);
 			$value = $this->parseValue($value);
 		}
 		return $value;
+	}
+
+	private static function createDateTime($string)
+	{
+		return new self::$dateTimeClass($string);
+	}
+
+	private static function createFromFormat($string)
+	{
+		return call_user_func_array([self::$dateTimeClass, 'createFromFormat'], func_get_args());
 	}
 }
