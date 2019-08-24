@@ -1,7 +1,7 @@
 all: test coverage
 
 test:
-	./vendor/bin/tester -c tests/php.ini tests
+	./vendor/bin/tester -p php -c tests/php.ini tests
 
 coverage:
-	./vendor/bin/coverage-report -c build/coverage.dat -o build/coverage.html -s src
+	./vendor/bin/tester -p phpdbg -c tests/php.ini --coverage build/coverage.html --coverage-src src tests
