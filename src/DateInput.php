@@ -49,7 +49,7 @@ class DateInput extends BaseControl  {
 	protected $type;
 
 	/** @var array */
-	protected $range = array('min' => null, 'max' => null);
+	protected $range = ['min' => null, 'max' => null];
 
 	/** @var mixed */
 	protected $submitedValue = null;
@@ -57,14 +57,14 @@ class DateInput extends BaseControl  {
 	/** @var string */
 	private static $dateTimeClass = \DateTime::class;
 
-	private static $formats = array(
+	private static $formats = [
 		self::TYPE_DATETIME => 'Y-m-d\TH:i:se',
 		self::TYPE_DATETIME_LOCAL => 'Y-m-d\TH:i:s',
 		self::TYPE_DATE => 'Y-m-d',
 		self::TYPE_MONTH => 'Y-m',
 		self::TYPE_TIME => 'H:i:s',
 		self::TYPE_WEEK => 'o-\WW'
-	);
+	];
 
 	public static function register($immutable = false) {
 		$class = __CLASS__;
@@ -95,12 +95,12 @@ class DateInput extends BaseControl  {
 		$this->control->data('dateinput-type', $type);
 	}
 
-    public function setValue($value = null) {
+	public function setValue($value = null) {
 		if ($value === null || $value instanceof \DateTimeInterface) {
 			$this->value = $value;
 			$this->submitedValue = null;
 		} elseif ($value instanceof \DateInterval) {
-			$this->value = self::createFromFormat(self::$formats[self::TYPE_TIME], $value->format("%H:%I:%S"));
+			$this->value = self::createFromFormat(self::$formats[self::TYPE_TIME], $value->format('%H:%I:%S'));
 			$this->submitedValue = null;
 		} elseif (is_string($value)) {
 			if ($value === '') {
@@ -117,7 +117,7 @@ class DateInput extends BaseControl  {
 			}
 		} else {
 			$this->submitedValue = $value;
-			throw new \InvalidArgumentException("Invalid type for \$value.");
+			throw new \InvalidArgumentException("Invalid type for $value.");
 		}
 		return $this;
 	}
@@ -162,7 +162,7 @@ class DateInput extends BaseControl  {
 
 	/**
 	 * Valid validator: is control valid?
-	 * @param  IControl
+	 * @param IControl
 	 * @return bool
 	 */
 	public static function validateDateInputValid(IControl $control) {
