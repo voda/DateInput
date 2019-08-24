@@ -1,6 +1,6 @@
 Form component for selecting date and time values.
 
-In PHP this addon works with DateTime objects, in the browser it uses jqueryUI calendar with timepicker addon. Look at some exmaples at the [demo page](http://date-input.vodacek.eu/).
+In PHP this addon works with DateTime objects, in the browser it uses jqueryUI calendar with timepicker addon. Look at some examples at the [demo page](http://date-input.vodacek.eu/).
 
 
 JS dependencies
@@ -11,7 +11,7 @@ JS dependencies
 Installation
 ---------
 
-`$ composer require voda/date-input:~1.0.0`
+`$ composer require voda/date-input`
 
 package can be also installed using bower: `$ bower install voda-date-input --save`
 
