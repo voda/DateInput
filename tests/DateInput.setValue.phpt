@@ -8,7 +8,7 @@ require __DIR__ . '/bootstrap.php';
 test(function() { // valid submitted value
 	$control = new DateInput('date', DateInput::TYPE_DATE);
 	$control->setValue('2014-02-14');
-	Assert::equal(new DateTime('2014-02-14 00:00:00'), $control->getValue());
+	Assert::equal(new DateTimeImmutable('2014-02-14 00:00:00'), $control->getValue());
 });
 
 test(function() { // null value
@@ -23,9 +23,9 @@ test(function() { // no value
 	Assert::equal(null, $control->getValue());
 });
 
-test(function() { // DateTime & DateInterval values
+test(function() { // DateTimeImmutable & DateInterval values
 	$control = new DateInput('date', DateInput::TYPE_TIME);
-	$control->setValue(new DateTime('1970-01-01 12:13:14'));
+	$control->setValue(new DateTimeImmutable('1970-01-01 12:13:14'));
 	Assert::equal('12:13:14', $control->getValue()->format('H:i:s'));
 	$control->setValue(new DateInterval('PT12H13M14S'));
 	Assert::equal('12:13:14', $control->getValue()->format('H:i:s'));

@@ -46,7 +46,7 @@ test(function() { // invalid value
 test(function() { // range condition
 	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATE);
-	$control->addRule(Form::RANGE, 'invalid range', array(new DateTime('2014-01-01'), new DateTime('2014-12-31')));
+	$control->addRule(Form::RANGE, 'invalid range', array(new DateTimeImmutable('2014-01-01'), new DateTimeImmutable('2014-12-31')));
 	$form->addComponent($control, 'input');
 
 	$form->cleanErrors();

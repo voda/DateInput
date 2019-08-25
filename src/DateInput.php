@@ -60,7 +60,7 @@ class DateInput extends BaseControl  {
 	protected $submittedValue = null;
 
 	/** @var string */
-	private static $dateTimeClass = \DateTime::class;
+	private $dateTimeClass = \DateTime::class;
 
 	public static $defaultValidMessage = 'Please enter a valid date.';
 
@@ -73,14 +73,14 @@ class DateInput extends BaseControl  {
 		self::TYPE_WEEK => 'o-\WW'
 	];
 
-	public static function register($immutable = false): void {
+	public static function register($immutable = true): void {
 		Container::extensionMethod('addDate', static function (
 			Container $form,
 			string $name,
 			string $label = null,
 			string $type = 'datetime-local'
-		) {
-			$component = new self($label, $type);
+		) use ($immutable) {
+			$component = new self($label, $type, $immutable);
 			$form->addComponent($component, $name);
 			$component->setRequired(false);
 			$component->addRule(static function(self $control) {
@@ -89,24 +89,25 @@ class DateInput extends BaseControl  {
 			return $component;
 		});
 		Validator::$messages[__CLASS__.'::validateDateInputRange'] = Validator::$messages[Form::RANGE];
-
-		if ($immutable) {
-			self::$dateTimeClass = \DateTimeImmutable::class;
-		}
 	}
 
 	/**
 	 * @param string|null $label
 	 * @param string $type
+	 * @param bool $immutable
 	 * @throws \InvalidArgumentException
 	 */
-	public function __construct(string $label = null, string $type = self::TYPE_DATETIME_LOCAL) {
+	public function __construct(string $label = null, string $type = self::TYPE_DATETIME_LOCAL, bool $immutable = true) {
 		if (!isset(self::$formats[$type])) {
 			throw new \InvalidArgumentException("invalid type '$type' given.");
 		}
 		parent::__construct($label);
 		$this->control->type = $this->type = $type;
 		$this->control->data('dateinput-type', $type);
+
+		if ($immutable) {
+			$this->dateTimeClass = \DateTimeImmutable::class;
+		}
 	}
 
 	public function setValue($value = null) {
@@ -223,12 +224,12 @@ class DateInput extends BaseControl  {
 
 	private function createDateTime(string $string): DateTimeInterface
 	{
-		return new self::$dateTimeClass($string);
+		return new $this->dateTimeClass($string);
 	}
 
 	private function createFromFormat(string $string): ?DateTimeInterface
 	{
-		$val = call_user_func_array([self::$dateTimeClass, 'createFromFormat'], func_get_args());
+		$val = call_user_func_array([$this->dateTimeClass, 'createFromFormat'], func_get_args());
 		return $val === false ? null : $val;
 	}
 }

@@ -32,7 +32,7 @@ insert required javascript and style files into your layout (order of scripts is
 ```
 register the addon in your bootstrap.php:
 ```
-Vodacek\Forms\Controls\DateInput::register(true);
+Vodacek\Forms\Controls\DateInput::register();
 ```
 initialize the calendar using javascript:
 ```js

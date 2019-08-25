@@ -21,7 +21,7 @@ test(function() { // min & max attributes
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'd');
 
-	$control->addRule(Nette\Forms\Form::RANGE, 'message', array(new DateTime('2014-01-01 12:00:00'), new DateTime('2014-12-31 12:00:00')));
+	$control->addRule(Nette\Forms\Form::RANGE, 'message', array(new DateTimeImmutable('2014-01-01 12:00:00'), new DateTimeImmutable('2014-12-31 12:00:00')));
 	Assert::contains('min="2014-01-01T12:00:00"', (string)$control->getControl());
 	Assert::contains('max="2014-12-31T12:00:00"', (string)$control->getControl());
 });
@@ -31,7 +31,7 @@ test(function() { // valid & invalid value
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'd');
 
-	$control->setValue(new DateTime('2014-06-01 12:13:14'));
+	$control->setValue(new DateTimeImmutable('2014-06-01 12:13:14'));
 	Assert::contains('value="2014-06-01T12:13:14"', (string)$control->getControl());
 
 	$control->setValue('fooo');

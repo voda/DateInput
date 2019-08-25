@@ -18,5 +18,5 @@ test(
 	$form->isValid();
 
 	Assert::false($control->hasErrors());
-	Assert::type('DateTime', $control->getValue());
+	Assert::type(DateTimeImmutable::class, $control->getValue());
 });
