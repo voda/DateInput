@@ -41,7 +41,7 @@ use Nette\Forms\Rules;
  */
 class DateInput extends BaseControl  {
 
-	public const TYPE_DATETIME = 'datetime',
+	const TYPE_DATETIME = 'datetime',
 			TYPE_DATETIME_LOCAL = 'datetime-local',
 			TYPE_DATE = 'date',
 			TYPE_MONTH = 'month',
@@ -165,7 +165,7 @@ class DateInput extends BaseControl  {
 		return ($control->value !== null || $control->submittedValue !== null);
 	}
 
-	private static function validateValid(IControl $control): bool {
+	private static function validateValid(IControl $control) {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}

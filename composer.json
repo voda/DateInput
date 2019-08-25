@@ -7,7 +7,7 @@
 	"keywords":["date", "form", "calendar", "input", "Nette"],
 	"license": "BSD-3-Clause",
 	"require": {
-		"php": ">=7.2.0",
+		"php": ">=5.5.0",
 		"nette/forms": "~2.0"
 	},
 	"autoload": {
