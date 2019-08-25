@@ -8,7 +8,7 @@
 	"license": "BSD-3-Clause",
 	"require": {
 		"php": ">=7.2.0",
-		"nette/forms": "~2.0"
+		"nette/forms": "~2.4|~3.0"
 	},
 	"autoload": {
 		"psr-4": {"Vodacek\\Forms\\Controls\\" : "src"}
