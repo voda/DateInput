@@ -1,36 +1,52 @@
 <?php
 
+use Nette\Forms\Form;
 use Vodacek\Forms\Controls\DateInput;
 use Tester\Assert;
 
 require __DIR__ . '/bootstrap.php';
 
 test(function() { // no value and valid value
+	$form = new Nette\Forms\Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
-	Assert::false(DateInput::validateFilled($control));
-	Assert::true(DateInput::validateValid($control));
+	$form->addComponent($control, 'date');
+
+	$control->validate();
+	Assert::false($control->hasErrors());
 
 	$control->setValue('2014-01-01T12:00:00');
-	Assert::true(DateInput::validateFilled($control));
-	Assert::true(DateInput::validateValid($control));
+	$control->validate();
+	Assert::false($control->hasErrors());
+});
+
+test(function() { // no value and valid value for required input
+	$form = new Nette\Forms\Form();
+	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
+	$form->addComponent($control, 'date');
+	$control->setRequired();
+
+	$control->validate();
+	Assert::true($control->hasErrors());
+
+	$control->setValue('2014-01-01T12:00:00');
+	$control->validate();
+	Assert::false($control->hasErrors());
 });
 
 test(function() { // invalid value
-	$form = new \Nette\Forms\Form();
+	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
-	$control->addRule(\Nette\Forms\Form::VALID, 'validation message');
 	$form->addComponent($control, 'input');
 
 	$control->setValue('invalid value');
-	$form->validate();
-	Assert::true(DateInput::validateFilled($control));
-	Assert::same(array('validation message'), $form->getErrors());
+	$control->validate();
+	Assert::false($control->hasErrors());
 });
 
 test(function() { // range condition
-	$form = new \Nette\Forms\Form();
+	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATE);
-	$control->addRule(\Nette\Forms\Form::RANGE, 'invalid range', array(new DateTime('2014-01-01'), new DateTime('2014-12-31')));
+	$control->addRule(Form::RANGE, 'invalid range', array(new DateTime('2014-01-01'), new DateTime('2014-12-31')));
 	$form->addComponent($control, 'input');
 
 	$form->cleanErrors();
