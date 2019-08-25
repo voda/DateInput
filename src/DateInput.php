@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
  * Copyright (c) 2011, Ondřej Vodáček
  * All rights reserved.
@@ -28,10 +29,11 @@
 
 namespace Vodacek\Forms\Controls;
 
+use DateTimeInterface;
 use Nette\Forms\Container;
+use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Form;
-use Nette\Forms\IControl,
-	Nette\Forms\Controls\BaseControl;
+use Nette\Forms\IControl;
 use Nette\Forms\Validator;
 
 /**
@@ -41,7 +43,7 @@ use Nette\Forms\Validator;
  */
 class DateInput extends BaseControl  {
 
-	const TYPE_DATETIME = 'datetime',
+	public const TYPE_DATETIME = 'datetime',
 			TYPE_DATETIME_LOCAL = 'datetime-local',
 			TYPE_DATE = 'date',
 			TYPE_MONTH = 'month',
@@ -71,8 +73,13 @@ class DateInput extends BaseControl  {
 		self::TYPE_WEEK => 'o-\WW'
 	];
 
-	public static function register($immutable = false) {
-		Container::extensionMethod('addDate', static function (Container $form, $name, $label = null, $type = 'datetime-local') {
+	public static function register($immutable = false): void {
+		Container::extensionMethod('addDate', static function (
+			Container $form,
+			string $name,
+			string $label = null,
+			string $type = 'datetime-local'
+		) {
 			$component = new self($label, $type);
 			$form->addComponent($component, $name);
 			$component->setRequired(false);
@@ -89,11 +96,11 @@ class DateInput extends BaseControl  {
 	}
 
 	/**
-	 * @param string
-	 * @param string
+	 * @param string|null $label
+	 * @param string $type
 	 * @throws \InvalidArgumentException
 	 */
-	public function __construct($label = null, $type = self::TYPE_DATETIME_LOCAL) {
+	public function __construct(string $label = null, string $type = self::TYPE_DATETIME_LOCAL) {
 		if (!isset(self::$formats[$type])) {
 			throw new \InvalidArgumentException("invalid type '$type' given.");
 		}
@@ -103,11 +110,11 @@ class DateInput extends BaseControl  {
 	}
 
 	public function setValue($value = null) {
-		if ($value === null || $value instanceof \DateTimeInterface) {
+		if ($value === null || $value instanceof DateTimeInterface) {
 			$this->value = $value;
 			$this->submittedValue = null;
 		} elseif ($value instanceof \DateInterval) {
-			$this->value = self::createFromFormat(self::$formats[self::TYPE_TIME], $value->format('%H:%I:%S'));
+			$this->value = $this->createFromFormat(self::$formats[self::TYPE_TIME], $value->format('%H:%I:%S'));
 			$this->submittedValue = null;
 		} elseif (is_string($value)) {
 			if ($value === '') {
@@ -115,7 +122,7 @@ class DateInput extends BaseControl  {
 				$this->submittedValue = null;
 			} else {
 				$this->value = $this->parseValue($value);
-				if ($this->value !== false) {
+				if ($this->value !== null) {
 					$this->submittedValue = null;
 				} else {
 					$this->value = null;
@@ -158,87 +165,70 @@ class DateInput extends BaseControl  {
 		return parent::addRule($operation, $message, $arg);
 	}
 
-	public static function validateFilled(IControl $control) {
+	public static function validateFilled(IControl $control): bool {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
 		return ($control->value !== null || $control->submittedValue !== null);
 	}
 
-	private static function validateValid(IControl $control) {
+	private static function validateValid(IControl $control): bool {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
 		return $control->submittedValue === null;
 	}
 
-	/**
-	 * @param self $control
-	 * @param array $args
-	 * @return bool
-	 */
-	public static function validateDateInputRange(self $control) {
-		if ($control->range['min'] !== null) {
-			if ($control->range['min'] > $control->value) {
-				return false;
-			}
+	public static function validateDateInputRange(self $control): bool {
+		if (($control->range['min'] !== null) && $control->range['min'] > $control->value) {
+			return false;
 		}
-		if ($control->range['max'] !== null) {
-			if ($control->range['max'] < $control->value) {
-				return false;
-			}
+
+		if (($control->range['max'] !== null) && $control->range['max'] < $control->value) {
+			return false;
 		}
+
 		return true;
 	}
 
-	/**
-	 * @param string $value
-	 * @return \DateTimeInterface
-	 */
-	private function parseValue($value) {
+	private function parseValue(string $value): ?DateTimeInterface {
 		$date = null;
 		if ($this->type === self::TYPE_WEEK) {
 			try {
-				$date = self::createDateTime($value."1");
+				$date = $this->createDateTime($value. '1');
 			} catch (\Exception $e) {
-				$date = false;
+				$date = null;
 			}
 		} else {
-			$date = self::createFromFormat('!'.self::$formats[$this->type], $value);
+			$date = $this->createFromFormat('!'.self::$formats[$this->type], $value);
 		}
 		return $date;
 	}
 
-	/**
-	 * @param \DateTimeInterface $value
-	 * @return string
-	 */
-	private function formatDate(\DateTimeInterface $value = null) {
-		if ($value) {
-			$value = $value->format(self::$formats[$this->type]);
+	private function formatDate(?DateTimeInterface $value = null): ?string {
+		if ($value === null) {
+			return null;
 		}
-		return $value;
+
+		return $value->format(self::$formats[$this->type]);
 	}
 
-	/**
-	 * @param \DateTimeInterface
-	 * @return \DateTimeInterface
-	 */
-	private function normalizeDate(\DateTimeInterface $value = null) {
-		if ($value) {
-			$value = $this->formatDate($value);
-			$value = $this->parseValue($value);
+	private function normalizeDate(?DateTimeInterface $value): ?DateTimeInterface {
+		if ($value === null) {
+			return null;
 		}
-		return $value;
+
+		return $this->parseValue($this->formatDate($value));
 	}
 
-	private static function createDateTime($string)
+	private function createDateTime(string $string): DateTimeInterface
 	{
 		return new self::$dateTimeClass($string);
 	}
 
-	private static function createFromFormat($string)
+	private function createFromFormat(string $string): ?DateTimeInterface
 	{
-		return call_user_func_array([self::$dateTimeClass, 'createFromFormat'], func_get_args());
+		$val = call_user_func_array([self::$dateTimeClass, 'createFromFormat'], func_get_args());
+		return $val === false ? null : $val;
 	}
 }
