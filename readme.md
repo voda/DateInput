@@ -1,15 +1,17 @@
-Form component for selecting date and time values.
+DateInput
+=========
+Nette forms component for selecting date and time values.
 
 In PHP this addon works with DateTime objects, in the browser it uses jqueryUI calendar with timepicker addon. Look at some examples at the [demo page](http://date-input.vodacek.eu/).
 
 
 JS dependencies
-----------
+---------------
  * [jQuery](http://jquery.com/) and [jQueryUI](http://jqueryui.com/)
  * [Timepicker addon](http://trentrichardson.com/examples/timepicker/) version 1.1.0 or newer
 
 Installation
----------
+------------
 
 `$ composer require voda/date-input`
 
@@ -24,7 +26,7 @@ insert required javascript and style files into your layout (order of scripts is
 ```
 register the addon in your bootstrap.php:
 ```
-Vodacek\Forms\Controls\DateInput::register();
+Vodacek\Forms\Controls\DateInput::register(true);
 ```
 initialize the calendar using javascript:
 ```js
@@ -58,4 +60,13 @@ $(document).ready(function() {
         }
     });
 });
+```
+
+Usage
+-----
+```php
+$form->addDate('datetimeLocal', 'Local datetime', DateInput::TYPE_DATETIME_LOCAL)
+        ->setRequired()
+        ->setDefaultValue(new DateTimeImmutable())
+        ->addRule(Form::RANGE, null, array(new DateTimeImmutable('-2 years'), new DateTimeImmutable('+2 years')));
 ```
