@@ -151,7 +151,7 @@
 		return parseDate(date + '-01');
 	};
 	var globalSettings = {
-		datetime: {
+		'datetime-local': {
 			parseFunction: parseDateTime,
 			create: function(object, settings) {
 				return object.datetimepicker(settings);
@@ -193,8 +193,6 @@
 			validFormat: '\\d{2}:\\d{2}'
 		}
 	};
-	globalSettings['datetime-local'] = globalSettings.datetime;
-	globalSettings['datetime-local'].validFormat += '.*'; // timezone
 
 	$.fn.dateinput = function(userSettings) {
 		this.each(function() {
@@ -263,7 +261,6 @@
 
 			//
 			switch (type) {
-				case 'datetime':
 				case 'datetime-local':
 					$.extend(pickerSettings, {
 						altFieldTimeOnly: false,

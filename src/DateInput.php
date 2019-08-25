@@ -43,7 +43,7 @@ use Nette\Forms\Validator;
  */
 class DateInput extends BaseControl  {
 
-	public const TYPE_DATETIME = 'datetime',
+	public const
 			TYPE_DATETIME_LOCAL = 'datetime-local',
 			TYPE_DATE = 'date',
 			TYPE_MONTH = 'month',
@@ -65,7 +65,6 @@ class DateInput extends BaseControl  {
 	public static $defaultValidMessage = 'Please enter a valid date.';
 
 	private static $formats = [
-		self::TYPE_DATETIME => 'Y-m-d\TH:i:se',
 		self::TYPE_DATETIME_LOCAL => 'Y-m-d\TH:i:s',
 		self::TYPE_DATE => 'Y-m-d',
 		self::TYPE_MONTH => 'Y-m',
@@ -78,7 +77,7 @@ class DateInput extends BaseControl  {
 			Container $form,
 			string $name,
 			string $label = null,
-			string $type = 'datetime-local'
+			string $type = self::TYPE_DATETIME_LOCAL
 		) use ($immutable) {
 			$component = new self($label, $type, $immutable);
 			$form->addComponent($component, $name);
