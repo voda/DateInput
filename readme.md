@@ -32,22 +32,18 @@ insert required javascript and style files into your layout (order of scripts is
 ```
 register the addon in your bootstrap.php:
 ```
-Vodacek\Forms\Controls\DateInput::register(true);
+Vodacek\Forms\Controls\DateInput::register();
 ```
 initialize the calendar using javascript:
 ```js
 $(document).ready(function() {
     $('input[data-dateinput-type]').dateinput({
-        datetime: {
-            dateFormat: 'd.m.yy',
-            timeFormat: 'H:mm',
-            options: { // options for type=datetime
-                changeYear: true
-            }
-        },
         'datetime-local': {
             dateFormat: 'd.m.yy',
-            timeFormat: 'H:mm'
+            timeFormat: 'H:mm',
+            options: { // options for type=datetime-local
+                changeYear: true
+            }
         },
         date: {
             dateFormat: 'd.m.yy'
