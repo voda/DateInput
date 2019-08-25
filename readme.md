@@ -5,6 +5,12 @@ Nette forms component for selecting date and time values.
 In PHP this addon works with DateTime objects, in the browser it uses jqueryUI calendar with timepicker addon. Look at some examples at the [demo page](http://date-input.vodacek.eu/).
 
 
+[![Build Status](https://travis-ci.org/voda/DateInput.svg?branch=master)](https://travis-ci.org/voda/DateInput)
+[![Latest Stable Version](https://poser.pugx.org/voda/date-input/v/stable)](https://packagist.org/packages/voda/date-input)
+[![Total Downloads](https://poser.pugx.org/voda/date-input/downloads)](https://packagist.org/packages/voda/date-input)
+[![License](https://poser.pugx.org/voda/date-input/license)](https://packagist.org/packages/voda/date-input)
+
+
 JS dependencies
 ---------------
  * [jQuery](http://jquery.com/) and [jQueryUI](http://jqueryui.com/)
