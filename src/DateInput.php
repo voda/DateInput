@@ -32,7 +32,7 @@ use Nette\Forms\Container;
 use Nette\Forms\Form;
 use Nette\Forms\IControl,
 	Nette\Forms\Controls\BaseControl;
-use Nette\Forms\Rules;
+use Nette\Forms\Validator;
 
 /**
  * @author Ondřej Vodáček <ondrej.vodacek@gmail.com>
@@ -81,7 +81,7 @@ class DateInput extends BaseControl  {
 			}, self::$defaultValidMessage);
 			return $component;
 		});
-		Rules::$defaultMessages[__CLASS__.'::validateDateInputRange'] = Rules::$defaultMessages[Form::RANGE];
+		Validator::$messages[__CLASS__.'::validateDateInputRange'] = Validator::$messages[Form::RANGE];
 
 		if ($immutable) {
 			self::$dateTimeClass = \DateTimeImmutable::class;
