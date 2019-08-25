@@ -105,25 +105,25 @@ class DateInput extends BaseControl  {
 	public function setValue($value = null) {
 		if ($value === null || $value instanceof \DateTimeInterface) {
 			$this->value = $value;
-			$this->submitedValue = null;
+			$this->submittedValue = null;
 		} elseif ($value instanceof \DateInterval) {
 			$this->value = self::createFromFormat(self::$formats[self::TYPE_TIME], $value->format('%H:%I:%S'));
-			$this->submitedValue = null;
+			$this->submittedValue = null;
 		} elseif (is_string($value)) {
 			if ($value === '') {
 				$this->value = null;
-				$this->submitedValue = null;
+				$this->submittedValue = null;
 			} else {
 				$this->value = $this->parseValue($value);
 				if ($this->value !== false) {
-					$this->submitedValue = null;
+					$this->submittedValue = null;
 				} else {
 					$this->value = null;
-					$this->submitedValue = $value;
+					$this->submittedValue = $value;
 				}
 			}
 		} else {
-			$this->submitedValue = $value;
+			$this->submittedValue = $value;
 			throw new \InvalidArgumentException("Invalid type for $value.");
 		}
 		return $this;
@@ -135,8 +135,8 @@ class DateInput extends BaseControl  {
 		if ($this->value !== null) {
 			$control->value = $this->value->format($format);
 		}
-		if ($this->submitedValue !== null && is_string($this->submitedValue)) {
-			$control->value = $this->submitedValue;
+		if ($this->submittedValue !== null && is_string($this->submittedValue)) {
+			$control->value = $this->submittedValue;
 		}
 		if ($this->range['min'] !== null) {
 			$control->min = $this->range['min']->format($format);
@@ -162,14 +162,14 @@ class DateInput extends BaseControl  {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
-		return ($control->value !== null || $control->submitedValue !== null);
+		return ($control->value !== null || $control->submittedValue !== null);
 	}
 
 	private static function validateValid(IControl $control): bool {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
-		return $control->submitedValue === null;
+		return $control->submittedValue === null;
 	}
 
 	/**
