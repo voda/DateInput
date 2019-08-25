@@ -11,8 +11,7 @@ test(
 	$control = new DateInput('date', DateInput::TYPE_DATE);
 	$form->addComponent($control, 'input');
 
-	$control->addCondition(\Nette\Forms\Form::FILLED)
-            ->addRule(\Nette\Forms\Form::VALID, "invalid date");
+	$control->addCondition(\Nette\Forms\Form::FILLED);
 
 	$control->setValue('2000-01-01');
 
