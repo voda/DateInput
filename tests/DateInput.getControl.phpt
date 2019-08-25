@@ -1,33 +1,36 @@
 <?php
+declare(strict_types=1);
 
+use Nette\Forms\Form;
+use Nette\Utils\Html;
 use Vodacek\Forms\Controls\DateInput;
 use Tester\Assert;
 
 require __DIR__ . '/bootstrap.php';
 
-test(function() {
-	$form = new Nette\Forms\Form();
+test(static function() {
+	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'input');
 
-	Assert::type('Nette\Utils\Html', $control->getControl());
+	Assert::type(Html::class, $control->getControl());
 	Assert::same('input', $control->getControl()->getName());
 	Assert::contains('type="datetime-local"', (string)$control->getControl());
 	Assert::contains('data-dateinput-type="datetime-local"', (string)$control->getControl());
 });
 
-test(function() { // min & max attributes
-	$form = new Nette\Forms\Form();
+test(static function() { // min & max attributes
+	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'd');
 
-	$control->addRule(Nette\Forms\Form::RANGE, 'message', array(new DateTimeImmutable('2014-01-01 12:00:00'), new DateTimeImmutable('2014-12-31 12:00:00')));
+	$control->addRule(Nette\Forms\Form::RANGE, 'message', [new DateTimeImmutable('2014-01-01 12:00:00'), new DateTimeImmutable('2014-12-31 12:00:00')]);
 	Assert::contains('min="2014-01-01T12:00:00"', (string)$control->getControl());
 	Assert::contains('max="2014-12-31T12:00:00"', (string)$control->getControl());
 });
 
-test(function() { // valid & invalid value
-	$form = new Nette\Forms\Form();
+test(static function() { // valid & invalid value
+	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'd');
 

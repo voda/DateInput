@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use Nette\Forms\Form;
 use Vodacek\Forms\Controls\DateInput;
@@ -6,8 +7,8 @@ use Tester\Assert;
 
 require __DIR__ . '/bootstrap.php';
 
-test(function() { // no value and valid value
-	$form = new Nette\Forms\Form();
+test(static function() { // no value and valid value
+	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'date');
 
@@ -19,8 +20,8 @@ test(function() { // no value and valid value
 	Assert::false($control->hasErrors());
 });
 
-test(function() { // no value and valid value for required input
-	$form = new Nette\Forms\Form();
+test(static function() { // no value and valid value for required input
+	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'date');
 	$control->setRequired();
@@ -33,7 +34,7 @@ test(function() { // no value and valid value for required input
 	Assert::false($control->hasErrors());
 });
 
-test(function() { // invalid value
+test(static function() { // invalid value
 	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
 	$form->addComponent($control, 'input');
@@ -43,10 +44,10 @@ test(function() { // invalid value
 	Assert::false($control->hasErrors());
 });
 
-test(function() { // range condition
+test(static function() { // range condition
 	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATE);
-	$control->addRule(Form::RANGE, 'invalid range', array(new DateTimeImmutable('2014-01-01'), new DateTimeImmutable('2014-12-31')));
+	$control->addRule(Form::RANGE, 'invalid range', [new DateTimeImmutable('2014-01-01'), new DateTimeImmutable('2014-12-31')]);
 	$form->addComponent($control, 'input');
 
 	$form->cleanErrors();
