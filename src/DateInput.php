@@ -53,6 +53,9 @@ class DateInput extends BaseControl  {
 	/** @var string */
 	protected $type;
 
+	/** @var bool */
+	private $nullable;
+
 	/** @var array */
 	protected $range = ['min' => null, 'max' => null];
 
@@ -135,6 +138,30 @@ class DateInput extends BaseControl  {
 		}
 		return $this;
 	}
+
+
+	/**
+	 * Returns control's value.
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		$value = parent::getValue();
+		return $this->nullable && $value === '' ? null : $value;
+	}
+
+
+	/**
+	 * Sets whether getValue() returns null instead of empty string.
+	 * @return static
+	 */
+	public function setNullable(bool $value = true)
+	{
+		$this->nullable = $value;
+		return $this;
+	}
+
+
 
 	public function getControl() {
 		$control = parent::getControl();
