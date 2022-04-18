@@ -31,9 +31,9 @@ namespace Vodacek\Forms\Controls;
 
 use DateTimeInterface;
 use Nette\Forms\Container;
+use Nette\Forms\Control;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Form;
-use Nette\Forms\IControl;
 use Nette\Forms\Validator;
 
 /**
@@ -44,11 +44,11 @@ use Nette\Forms\Validator;
 class DateInput extends BaseControl  {
 
 	public const
-			TYPE_DATETIME_LOCAL = 'datetime-local',
-			TYPE_DATE = 'date',
-			TYPE_MONTH = 'month',
-			TYPE_TIME = 'time',
-			TYPE_WEEK = 'week';
+		TYPE_DATETIME_LOCAL = 'datetime-local',
+		TYPE_DATE = 'date',
+		TYPE_MONTH = 'month',
+		TYPE_TIME = 'time',
+		TYPE_WEEK = 'week';
 
 	/** @var string */
 	protected $type;
@@ -64,7 +64,7 @@ class DateInput extends BaseControl  {
 
 	public static $defaultValidMessage = 'Please enter a valid date.';
 
-	private static $formats = [
+	public static $formats = [
 		self::TYPE_DATETIME_LOCAL => 'Y-m-d\TH:i:s',
 		self::TYPE_DATE => 'Y-m-d',
 		self::TYPE_MONTH => 'Y-m',
@@ -165,14 +165,14 @@ class DateInput extends BaseControl  {
 		return parent::addRule($operation, $message, $arg);
 	}
 
-	public static function validateFilled(IControl $control): bool {
+	public static function validateFilled(Control $control): bool {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
 		return ($control->value !== null || $control->submittedValue !== null);
 	}
 
-	private static function validateValid(IControl $control): bool {
+	private static function validateValid(Control $control): bool {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
