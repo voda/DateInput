@@ -112,6 +112,11 @@ class DateInput extends BaseControl  {
 		}
 	}
 
+	/**
+	 * Sets control's value.
+	 * @return static
+	 * @internal
+	 */
 	public function setValue($value = null) {
 		if ($value === null || $value instanceof DateTimeInterface) {
 			$this->value = $value;
@@ -139,7 +144,6 @@ class DateInput extends BaseControl  {
 		return $this;
 	}
 
-
 	/**
 	 * Returns control's value.
 	 * @return mixed
@@ -150,7 +154,6 @@ class DateInput extends BaseControl  {
 		return $this->nullable && $value === '' ? null : $value;
 	}
 
-
 	/**
 	 * Sets whether getValue() returns null instead of empty string.
 	 * @return static
@@ -160,8 +163,6 @@ class DateInput extends BaseControl  {
 		$this->nullable = $value;
 		return $this;
 	}
-
-
 
 	public function getControl() {
 		$control = parent::getControl();
@@ -228,6 +229,10 @@ class DateInput extends BaseControl  {
 			}
 		} else {
 			$date = $this->createFromFormat('!'.self::$formats[$this->type], $value);
+			//try find in format without seconds
+			if(!$date && $this->type == self::TYPE_DATETIME_LOCAL) {
+				$date = $this->createFromFormat('!Y-m-d\TH:i', $value);
+			}
 		}
 		return $date;
 	}
