@@ -31,9 +31,9 @@ namespace Vodacek\Forms\Controls;
 
 use DateTimeInterface;
 use Nette\Forms\Container;
+use Nette\Forms\Control;
 use Nette\Forms\Controls\BaseControl;
 use Nette\Forms\Form;
-use Nette\Forms\IControl;
 use Nette\Forms\Validator;
 
 /**
@@ -44,14 +44,17 @@ use Nette\Forms\Validator;
 class DateInput extends BaseControl  {
 
 	public const
-			TYPE_DATETIME_LOCAL = 'datetime-local',
-			TYPE_DATE = 'date',
-			TYPE_MONTH = 'month',
-			TYPE_TIME = 'time',
-			TYPE_WEEK = 'week';
+		TYPE_DATETIME_LOCAL = 'datetime-local',
+		TYPE_DATE = 'date',
+		TYPE_MONTH = 'month',
+		TYPE_TIME = 'time',
+		TYPE_WEEK = 'week';
 
 	/** @var string */
 	protected $type;
+
+	/** @var bool */
+	private $nullable;
 
 	/** @var array */
 	protected $range = ['min' => null, 'max' => null];
@@ -64,7 +67,7 @@ class DateInput extends BaseControl  {
 
 	public static $defaultValidMessage = 'Please enter a valid date.';
 
-	private static $formats = [
+	public static $formats = [
 		self::TYPE_DATETIME_LOCAL => 'Y-m-d\TH:i:s',
 		self::TYPE_DATE => 'Y-m-d',
 		self::TYPE_MONTH => 'Y-m',
@@ -109,6 +112,11 @@ class DateInput extends BaseControl  {
 		}
 	}
 
+	/**
+	 * Sets control's value.
+	 * @return static
+	 * @internal
+	 */
 	public function setValue($value = null) {
 		if ($value === null || $value instanceof DateTimeInterface) {
 			$this->value = $value;
@@ -133,6 +141,26 @@ class DateInput extends BaseControl  {
 			$this->submittedValue = $value;
 			throw new \InvalidArgumentException("Invalid type for $value.");
 		}
+		return $this;
+	}
+
+	/**
+	 * Returns control's value.
+	 * @return mixed
+	 */
+	public function getValue()
+	{
+		$value = parent::getValue();
+		return $this->nullable && $value === '' ? null : $value;
+	}
+
+	/**
+	 * Sets whether getValue() returns null instead of empty string.
+	 * @return static
+	 */
+	public function setNullable(bool $value = true)
+	{
+		$this->nullable = $value;
 		return $this;
 	}
 
@@ -165,14 +193,14 @@ class DateInput extends BaseControl  {
 		return parent::addRule($operation, $message, $arg);
 	}
 
-	public static function validateFilled(IControl $control): bool {
+	public static function validateFilled(Control $control): bool {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
 		return ($control->value !== null || $control->submittedValue !== null);
 	}
 
-	private static function validateValid(IControl $control): bool {
+	private static function validateValid(Control $control): bool {
 		if (!$control instanceof self) {
 			throw new \InvalidArgumentException("Cant't validate control '".\get_class($control)."'.");
 		}
@@ -201,6 +229,10 @@ class DateInput extends BaseControl  {
 			}
 		} else {
 			$date = $this->createFromFormat('!'.self::$formats[$this->type], $value);
+			//try find in format without seconds
+			if(!$date && $this->type == self::TYPE_DATETIME_LOCAL) {
+				$date = $this->createFromFormat('!Y-m-d\TH:i', $value);
+			}
 		}
 		return $date;
 	}
