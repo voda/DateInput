@@ -34,6 +34,28 @@ test(static function() { // no value and valid value for required input
 	Assert::false($control->hasErrors());
 });
 
+test(static function() { // value and from browser come different format
+	$form = new Form();
+	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
+	$form->addComponent($control, 'date');
+	$control->setRequired();
+
+	$control->validate();
+	Assert::true($control->hasErrors());
+
+	$control->setValue('2022-04-01T15:15:15');
+	$control->validate();
+	Assert::false($control->hasErrors());
+
+	$control->setValue('2022-04-01T15:15:00');
+	$control->validate();
+	Assert::false($control->hasErrors());
+
+	$control->setValue('2022-04-01T15:15');
+	$control->validate();
+	Assert::false($control->hasErrors());
+});
+
 test(static function() { // invalid value
 	$form = new Form();
 	$control = new DateInput('date', DateInput::TYPE_DATETIME_LOCAL);
