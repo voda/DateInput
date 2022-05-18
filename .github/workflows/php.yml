@@ -1,0 +1,21 @@
+name: Run PHP checks
+
+on: [push]
+
+jobs:
+  php-checks:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: shivammathur/setup-php@2.18.1
+        with:
+          php-version: '7.4'
+          extensions: json
+          tools: composer:v2
+
+      - uses: ramsey/composer-install@v1
+
+      - run: composer test
