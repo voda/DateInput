@@ -6,6 +6,9 @@
 	],
 	"keywords":["date", "form", "calendar", "input", "Nette"],
 	"license": "BSD-3-Clause",
+	"scripts": {
+		"test": "tester -c tests/php.ini tests"
+	},
 	"require": {
 		"php": ">=7.2.0",
 		"nette/forms": "~2.4|~3.0"
