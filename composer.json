@@ -14,6 +14,6 @@
 		"psr-4": {"Vodacek\\Forms\\Controls\\" : "src"}
 	},
 	"require-dev": {
-		"nette/tester": "~1.7.2"
+		"nette/tester": "~2.4.0"
 	}
 }
