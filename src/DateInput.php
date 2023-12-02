@@ -72,8 +72,8 @@ class DateInput extends BaseControl  {
 		self::TYPE_WEEK => 'o-\WW'
 	];
 
-	public static function register($immutable = true): void {
-		Container::extensionMethod('addDate', static function (
+	public static function register($immutable = true, $methodName = 'addDate'): void {
+		Container::extensionMethod($methodName, static function (
 			Container $form,
 			string $name,
 			string $label = null,
