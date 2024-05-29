@@ -11,7 +11,7 @@ In PHP this addon works with DateTime objects, in the browser it uses jqueryUI c
 [![License](https://poser.pugx.org/voda/date-input/license)](https://packagist.org/packages/voda/date-input)
 
 
-JS dependencies
+JS dependencies (recomended)
 ---------------
  * [jQuery](http://jquery.com/) and [jQueryUI](http://jqueryui.com/)
  * [Timepicker addon](http://trentrichardson.com/examples/timepicker/) version 1.1.0 or newer
@@ -30,11 +30,28 @@ insert required javascript and style files into your layout (order of scripts is
 <link rel="stylesheet" type="text/css" href="{$basePath}/styles/jquery-ui-timepicker-addon.css">
 <link rel="stylesheet" type="text/css" href="{$basePath}/styles/dateInput.css">
 ```
-register the addon in your bootstrap.php:
-```
+
+### Registering
+
+#### Register the addon in your bootstrap.php
+
+```php
 Vodacek\Forms\Controls\DateInput::register();
 ```
+
+#### Or use DI extension
+
+config.neon:
+
+```neon
+extensions:
+    dateInput: Vodacek\Forms\Controls\Extension
+```
+
+### If you want use jQuery calendar (not necessary)
+
 initialize the calendar using javascript:
+
 ```js
 $(document).ready(function() {
     $('input[data-dateinput-type]').dateinput({
@@ -71,4 +88,8 @@ $form->addDate('datetimeLocal', 'Local datetime', DateInput::TYPE_DATETIME_LOCAL
         ->setRequired()
         ->setDefaultValue(new DateTimeImmutable())
         ->addRule(Form::RANGE, null, array(new DateTimeImmutable('-2 years'), new DateTimeImmutable('+2 years')));
+
+$form->addDate('date', 'Date', DateInput::TYPE_DATE);
+
+$form->addDate('time', 'Time', DateInput::TYPE_TIME);
 ```
